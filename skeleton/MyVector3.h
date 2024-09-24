@@ -1,24 +1,27 @@
 #pragma once
+#include <cmath>
+
 class MyVector3
 {
 public:
-	float x, y, z;
+    // Constructores
+    MyVector3() : x(0), y(0), z(0) {};
+    MyVector3(float x, float y, float z) : x(x), y(y), z(z) {};
 
-	MyVector3() {};
-	MyVector3(float x, float y, float z) : x(x), y(y), z(z) {};
-	
+    // Métodos
+    MyVector3 Normalize() const;
+    float Magnitude() const;
+    float DotProduct(const MyVector3& other) const;
+    MyVector3 MultiplyByScalar(float scalar) const;
 
-	float Normalize(float x, float y, float z);
-	MyVector3 ScalarProduct();
-	MyVector3 MultiplyByScalar();
-
-	// Operadores =, +, -, *
-	MyVector3 operator=(float x, float y, float z) const { return (x, y, z); }
-	MyVector3 operator+(float x, float y, float z) const { return (x, y, z); }
-	MyVector3 operator-(float x, float y, float z) const { return (x, y, z); }
-	MyVector3 operator*(float x, float y, float z) const { return (x, y, z); }
+    // Operadores sobrecargados
+    MyVector3 operator=(const MyVector3& other);
+    MyVector3 operator+(const MyVector3& other) const;
+    MyVector3 operator-(const MyVector3& other) const;
+    MyVector3 operator*(float scalar) const;
+    bool operator==(const MyVector3& other) const;
 
 private:
-
+    float x, y, z;
 };
 
