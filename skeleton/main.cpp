@@ -8,6 +8,8 @@
 #include "RenderUtils.hpp"
 #include "callbacks.hpp"
 
+#include "Particle.h"
+
 #include <iostream>
 
 std::string display_text = "This is a test";
@@ -32,6 +34,8 @@ ContactReportCallback gContactReportCallback;
 
 RenderItem *sphere1RI = NULL;
 RenderItem *sphere2RI = NULL;
+
+Particle *particle = nullptr;
 
 PxTransform pruebaTR;
 
@@ -61,9 +65,14 @@ void initPhysics(bool interactive)
 	gScene = gPhysics->createScene(sceneDesc);
 
 
-	sphere1RI = new RenderItem(CreateShape(PxSphereGeometry(10)), new PxTransform(0, 35, 0), Vector4(1, 0.5, 1, 1));
-	sphere2RI = new RenderItem(CreateShape(PxSphereGeometry(5)), new PxTransform(20, 20, 0), Vector4(0.5, 0.5, 0.25, 1));
-	}
+	//sphere1RI = new RenderItem(CreateShape(PxSphereGeometry(10)), new PxTransform(0, 35, 0), Vector4(1, 0.5, 1, 1));
+	//sphere2RI = new RenderItem(CreateShape(PxSphereGeometry(5)), new PxTransform(20, 20, 0), Vector4(0.5, 0.5, 0.25, 1));
+	//
+	particle = new Particle(PxVec3(0,0,0),PxVec3(0,0,0), PxVec3(5,0,0));
+
+	
+	
+}
 
 
 // Function to configure what happens in each step of physics
@@ -72,7 +81,7 @@ void initPhysics(bool interactive)
 void stepPhysics(bool interactive, double t)
 {
 	PX_UNUSED(interactive);
-
+	particle->Integrate(t);
 	gScene->simulate(t);
 	gScene->fetchResults(true);
 }

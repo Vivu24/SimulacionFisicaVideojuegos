@@ -10,7 +10,7 @@ MyVector3 MyVector3::Normalize() const {
 }
 
 float MyVector3::Magnitude() const {
-    return std::sqrt(x ^ 2 + y ^ 2 + z ^ 2);
+    return std::sqrt(x * x + y * y + z * z);
 }
 
 float MyVector3::DotProduct(const MyVector3& other) const {
