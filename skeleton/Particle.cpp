@@ -34,3 +34,8 @@ void Particle::SetAcceleration(PxVec3 dir)
 {
 	acceleration = dir;
 }
+
+void Particle::SetVelocity(PxVec3 vel)
+{
+	velocity = vel;
+}

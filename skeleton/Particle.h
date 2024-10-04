@@ -15,7 +15,11 @@ public:
 	~Particle();
 
 	void Integrate(double t);
+
 	void SetAcceleration(PxVec3 dir);
+	void SetVelocity(PxVec3 vel);
+
+	PxVec3 getPose() { return pose; }
 
 private:
 	PxVec3 velocity;

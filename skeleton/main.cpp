@@ -73,10 +73,20 @@ void initPhysics(bool interactive)
 	 
 	
 
-	myFloor = new RenderItem(CreateShape(PxPlaneGeometry()), new PxTransform(0, 0, 0), Vector4(0.5, 0.5, 0.25, 1));	
+	myFloor = new RenderItem(CreateShape(PxBoxGeometry( 100, 1, 100 )), new PxTransform(0, 0, 0), Vector4(0.5, 0.5, 0.25, 1));
 
 	
 
+}
+
+void checkParticlesHigh() {
+	for each (Particle * particle in particles)
+	{
+		if (particle->getPose().y - 1.5 <= myFloor->transform->p.y) {
+			particle->SetAcceleration(PxVec3(0, 0, 0));
+			particle->SetVelocity(PxVec3(0, 0, 0));
+		}
+	}
 }
 
 
@@ -86,14 +96,17 @@ void initPhysics(bool interactive)
 void stepPhysics(bool interactive, double t)
 {
 	PX_UNUSED(interactive);
-	for each (Particle *particle in particles)
-	{
-		particle->Integrate(t);
-
-	}
 	gScene->simulate(t);
 	gScene->fetchResults(true);
+
+
+	for each (Particle * particle in particles)
+	{
+		particle->Integrate(t);
+	}
+	checkParticlesHigh();
 }
+
 
 // Function to clean data
 // Add custom code to the begining of the function
@@ -130,7 +143,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	{	
 		cout << "Particle" << endl;
 
-		Particle* particle = new Particle(PxVec3(GetCamera()->getTransform().p), PxVec3(-5, 0, -5), PxVec3(0, 0, 0), 1);
+		Particle* particle = new Particle(GetCamera()->getTransform().p, 10 * GetCamera()->getDir(), PxVec3(0, 0, 0), 1);
 		particle->SetAcceleration(PxVec3(0, -2.5, 0));
 		particles.push_back(particle);
 		break;
