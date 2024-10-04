@@ -35,7 +35,10 @@ ContactReportCallback gContactReportCallback;
 RenderItem *sphere1RI = NULL;
 RenderItem *sphere2RI = NULL;
 
-Particle *particle = nullptr;
+RenderItem *myFloor = NULL;
+//Particle *particle = nullptr;
+
+vector<Particle*> particles;
 
 PxTransform pruebaTR;
 
@@ -67,11 +70,13 @@ void initPhysics(bool interactive)
 
 	//sphere1RI = new RenderItem(CreateShape(PxSphereGeometry(10)), new PxTransform(0, 35, 0), Vector4(1, 0.5, 1, 1));
 	//sphere2RI = new RenderItem(CreateShape(PxSphereGeometry(5)), new PxTransform(20, 20, 0), Vector4(0.5, 0.5, 0.25, 1));
-	//
-	particle = new Particle(PxVec3(0,0,0),PxVec3(0,0,0), PxVec3(5,0,0));
+	 
+	
+
+	myFloor = new RenderItem(CreateShape(PxPlaneGeometry()), new PxTransform(0, 0, 0), Vector4(0.5, 0.5, 0.25, 1));	
 
 	
-	
+
 }
 
 
@@ -81,7 +86,11 @@ void initPhysics(bool interactive)
 void stepPhysics(bool interactive, double t)
 {
 	PX_UNUSED(interactive);
-	particle->Integrate(t);
+	for each (Particle *particle in particles)
+	{
+		particle->Integrate(t);
+
+	}
 	gScene->simulate(t);
 	gScene->fetchResults(true);
 }
@@ -115,6 +124,15 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	//case ' ':	break;
 	case ' ':
 	{
+		break;
+	}
+	case 'G':
+	{	
+		cout << "Particle" << endl;
+
+		Particle* particle = new Particle(PxVec3(GetCamera()->getTransform().p), PxVec3(-5, 0, -5), PxVec3(0, 0, 0), 1);
+		particle->SetAcceleration(PxVec3(0, -2.5, 0));
+		particles.push_back(particle);
 		break;
 	}
 	default:
