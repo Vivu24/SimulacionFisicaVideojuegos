@@ -100,9 +100,10 @@ void stepPhysics(bool interactive, double t)
 	gScene->fetchResults(true);
 
 
-	for each (Particle * particle in particles)
+	for each (Particle* particle in particles)
 	{
 		particle->Integrate(t);
+		particle->UpdateLifeTime(t);
 	}
 	checkParticlesHigh();
 }
@@ -143,7 +144,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	{	
 		cout << "Particle" << endl;
 
-		Particle* particle = new Particle(GetCamera()->getTransform().p, 10 * GetCamera()->getDir(), PxVec3(0, 0, 0), 1);
+		Particle* particle = new Particle(GetCamera()->getTransform().p, 10 * GetCamera()->getDir(), PxVec3(0, 0, 0), 1, 5);
 		particle->SetAcceleration(PxVec3(0, -2.5, 0));
 		particles.push_back(particle);
 		break;

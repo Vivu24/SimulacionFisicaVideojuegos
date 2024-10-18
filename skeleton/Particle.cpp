@@ -1,7 +1,7 @@
 #include "Particle.h"
 
-Particle::Particle(PxVec3 pos, PxVec3 velo, PxVec3 acel, double newMass) :
-	pose(pos), velocity(velo), acceleration(acel), mass(newMass)
+Particle::Particle(PxVec3 pos, PxVec3 velo, PxVec3 acel, double newMass, double time) :
+	pose(pos), velocity(velo), acceleration(acel), mass(newMass), lifeTime(time)
 {
 	transform = new PxTransform(pose);
 	PxSphereGeometry geo(1);
@@ -38,4 +38,12 @@ void Particle::SetAcceleration(PxVec3 dir)
 void Particle::SetVelocity(PxVec3 vel)
 {
 	velocity = vel;
+}
+
+void Particle::UpdateLifeTime(double t)
+{
+	lifeTime -= t;
+	/*if (lifeTime <= 0) {
+		delete this;
+	}*/
 }
