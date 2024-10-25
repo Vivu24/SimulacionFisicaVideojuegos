@@ -8,7 +8,8 @@
 #include "RenderUtils.hpp"
 #include "callbacks.hpp"
 
-#include "Particle.h"
+//#include "Particle.h"
+#include "ParticleSystem.h"
 
 #include <iostream>
 
@@ -36,12 +37,13 @@ RenderItem *sphere1RI = NULL;
 RenderItem *sphere2RI = NULL;
 
 RenderItem *myFloor = NULL;
+ParticleSystem* particleSystem = NULL;
+
 //Particle *particle = nullptr;
 
 vector<Particle*> particles;
 
 PxTransform pruebaTR;
-
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -73,20 +75,21 @@ void initPhysics(bool interactive)
 	 
 	
 
-	myFloor = new RenderItem(CreateShape(PxBoxGeometry( 100, 1, 100 )), new PxTransform(0, 0, 0), Vector4(0.5, 0.5, 0.25, 1));
+	//myFloor = new RenderItem(CreateShape(PxBoxGeometry( 100, 1, 100 )), new PxTransform(0, 0, 0), Vector4(0.5, 0.5, 0.25, 1));
 
-	
+	particleSystem = new ParticleSystem();
+	particleSystem->CreateUniformGenerator(Vector3(0, 0, 0), Vector3(0, 20, 0), 300, 10.0f, 5.0f, SpawnDistribution::UNIFORM, 50.0f, 10);
 
 }
 
 void checkParticlesHigh() {
-	for each (Particle * particle in particles)
+	/*for each (Particle * particle in particles)
 	{
-		if (particle->getPose().y - 1.5 <= myFloor->transform->p.y) {
+		if (particle->getPosition().y - 1.5 <= myFloor->transform->p.y) {
 			particle->SetAcceleration(PxVec3(0, 0, 0));
 			particle->SetVelocity(PxVec3(0, 0, 0));
 		}
-	}
+	}*/
 }
 
 
@@ -95,16 +98,15 @@ void checkParticlesHigh() {
 // t: time passed since last call in milliseconds
 void stepPhysics(bool interactive, double t)
 {
+	particleSystem->Update(t);
 	PX_UNUSED(interactive);
 	gScene->simulate(t);
 	gScene->fetchResults(true);
-
-
-	for each (Particle* particle in particles)
+	/*for each (Particle* particle in particles)
 	{
 		particle->Integrate(t);
-		particle->UpdateLifeTime(t);
-	}
+		particle->Update(t);
+	}*/
 	checkParticlesHigh();
 }
 
