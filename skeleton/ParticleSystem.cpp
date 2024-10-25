@@ -33,13 +33,13 @@ void ParticleSystem::Update(double t) {
 	for (auto it = particles.begin(); it != particles.end(); ) {
 		if (*it != nullptr) {
 			(*it)->Update(t, *this);
-			++it;
+			it++;
 		}
 	}
 
 	for (auto p : particlesToErase) {
-		cout << "ENTRA A BORRAR\n";
-		auto it = std::find(particles.begin(), particles.end(), p);
+		cout << "Borra" << endl;
+		auto it = find(particles.begin(), particles.end(), p);
 		if (it != particles.end()) {
 			particles.erase(it);
 			delete p;
@@ -58,17 +58,17 @@ void ParticleSystem::AddParticle(Particle* p) {
  	p->setIterator(--particles.end());
 }
 
-void ParticleSystem::CreateUniformGenerator(Vector3 pos, Vector3 direction, float rate, float range, float spawnR, SpawnDistribution sp, float rat, float lifetime)
+void ParticleSystem::CreateUniformGenerator(PxVec3 pos, PxVec3 direction, float rate, float range, float sr, SpawnDistribution sd, float rat, float lifetime)
 {
-	Particle p = Particle(pos, direction, Vector3(0, -10, 0), lifetime);
+	Particle p = Particle(pos, direction, PxVec3(0, -5, 0), lifetime);
 	p.setRadius(rat);
 
-	generators.push_back(new UniformGenerator(&p, rate, range, spawnR, sp));
+	generators.push_back(new UniformGenerator(&p, rate, range, sr, sd));
 }
 
-void ParticleSystem::CreateNormalGenerator(Vector3 pos, Vector3 direction, float rate, Vector3 dev, float spawnR, SpawnDistribution sp, float rat, float lifetime)
+void ParticleSystem::CreateNormalGenerator(PxVec3 pos, PxVec3 direction, float rate, PxVec3 des, float sr, SpawnDistribution sd, float rat, float lifetime)
 {
-	Particle p = Particle(pos, direction, Vector3(0, -10, 0), lifetime);
+	Particle p = Particle(pos, direction, PxVec3(0, -5, 0), lifetime);
 	p.setRadius(rat);
-	generators.push_back(new NormalGenerator(&p, rate, dev, spawnR, sp));
+	generators.push_back(new NormalGenerator(&p, rate, des, sr, sd));
 }

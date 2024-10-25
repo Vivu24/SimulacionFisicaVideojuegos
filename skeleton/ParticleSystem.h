@@ -22,8 +22,8 @@ public:
 	void EliminateParticle(Particle* particle);
 	void AddParticle(Particle* p);
 
-	void CreateUniformGenerator(Vector3 pos, Vector3 direction, float rate, float range, float spawnR, SpawnDistribution sp, float rat, float lifetime = 10.0f);
-	void CreateNormalGenerator(Vector3 pos, Vector3 direction, float rate, Vector3 dev, float spawnR, SpawnDistribution sp, float rat, float lifetime = 10.0f);
+	void CreateUniformGenerator(PxVec3 pos, PxVec3 direction, float rate, float range, float sr, SpawnDistribution sd, float rat, float lifetime = 15.0f);
+	void CreateNormalGenerator(PxVec3 pos, PxVec3 direction, float rate, PxVec3 des, float sr, SpawnDistribution sd, float rat, float lifetime = 15.0f);
 private:
 	list<Particle*> particles;
 	list<ParticleGenerator*> generators;

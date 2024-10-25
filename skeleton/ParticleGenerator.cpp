@@ -1,47 +1,48 @@
 #include "ParticleGenerator.h"
 #include "ParticleSystem.h"
 
-ParticleGenerator::ParticleGenerator(Particle* p, float rate, float spawnR, SpawnDistribution sp) : 
-	model_particle(*p), emissionRate(rate), spawn_range(spawnR), spawn_distribution(sp) {
+ParticleGenerator::ParticleGenerator(Particle* p, float rate, float sr, SpawnDistribution sd) : 
+	myParticle(*p), creationVelocity(rate), spawnDistance(sr), mySpawnDistribution(sd) {
 	random_device rd;
-	random_engine.seed(rd());
+	myRandom.seed(rd());
 }
 
-Vector3 ParticleGenerator::calculatePosition()
+PxVec3 ParticleGenerator::calculatePosition()
 {
-    Vector3 modPos = model_particle.getPosition();
-    Vector3 endPos;
+    PxVec3 initialPosition = myParticle.getPosition();
+    PxVec3 endPosition;
 
-    if (spawn_distribution == UNIFORM) {
+    // UNIFORME
+    if (mySpawnDistribution == UNIFORM) {
 
-        uniform_real_distribution<float> distX(modPos.x - spawn_range, modPos.x + spawn_range);
-        uniform_real_distribution<float> distY(modPos.y - spawn_range, modPos.y + spawn_range);
-        uniform_real_distribution<float> distZ(modPos.z - spawn_range, modPos.z + spawn_range);
-        endPos = Vector3(distX(random_engine), distY(random_engine), distZ(random_engine));
+        uniform_real_distribution<float> distX(initialPosition.x - spawnDistance, initialPosition.x + spawnDistance);
+        uniform_real_distribution<float> distY(initialPosition.y - spawnDistance, initialPosition.y + spawnDistance);
+        uniform_real_distribution<float> distZ(initialPosition.z - spawnDistance, initialPosition.z + spawnDistance);
+        endPosition = PxVec3(distX(myRandom), distY(myRandom), distZ(myRandom));
     }
-    else if (spawn_distribution == NORMAL) {
-        normal_distribution<float> distX(modPos.x, spawn_range);
-        normal_distribution<float> distY(modPos.y, spawn_range);
-        normal_distribution<float> distZ(modPos.z, spawn_range);
-        endPos = Vector3(distX(random_engine), distY(random_engine), distZ(random_engine));
+
+    // NORMAL
+    else if (mySpawnDistribution == NORMAL) {
+        normal_distribution<float> distX(initialPosition.x, spawnDistance);
+        normal_distribution<float> distY(initialPosition.y, spawnDistance);
+        normal_distribution<float> distZ(initialPosition.z, spawnDistance);
+        endPosition = PxVec3(distX(myRandom), distY(myRandom), distZ(myRandom));
     }
-    return endPos;
+    return endPosition;
 }
 
 void ParticleGenerator::update(double t, ParticleSystem& pS) {
-    // Acumula el tiempo
-    accumulatedTime += t;
    
-    // Particulas a emitir
-    int particlesToEmit = static_cast<int>(accumulatedTime * emissionRate);
+    int auxParticles = static_cast<int>(lastTimed * creationVelocity);
 
-    for (int i = 0; i < particlesToEmit; ++i) {
+    for (int i = 0; i < auxParticles; ++i) {
         Particle* newParticle = generate();
-        if (newParticle) {
-            pS.AddParticle(newParticle);
+        if (!newParticle) {
+            cout << "noNueva" << endl;
         }
+        else pS.AddParticle(newParticle);
     }
 
-    // Restar el tiempo emitido
-    accumulatedTime -= particlesToEmit / emissionRate;
+    lastTimed += t;
+    lastTimed -= auxParticles / creationVelocity;
 }

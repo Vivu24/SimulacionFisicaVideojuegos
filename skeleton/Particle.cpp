@@ -13,7 +13,7 @@ Particle::Particle(PxVec3 pos, PxVec3 velo, PxVec3 acel, double newMass, double 
 	damping = 0.99;
 }
 
-Particle::Particle(PxVec3 pos, PxVec3 velo, Vector3 acel, double time) :
+Particle::Particle(PxVec3 pos, PxVec3 velo, PxVec3 acel, double time) :
 	lifeTime(time), acceleration(acel), velocity(velo)
 {
 	transform = PxTransform(pos);
@@ -80,14 +80,15 @@ bool Particle::OnRadius()
 
 bool Particle::UpdateLifeTime(double t)
 {
-	return true;
+	lifeTime -= t;
+	return (lifeTime <= 0);
 }
 
 
 void Particle::Update(double t, ParticleSystem& system)
 {
-	cout << "UPDATE PARTICULA\n";
-	lifeTime -= t;
+	cout << "UPDATE PARTICULA" << endl;
+	//lifeTime -= t;
 	Integrate(t);
-	if (!OnRadius() || lifeTime <= 0) system.EliminateParticle(this);
+	if (!OnRadius() || UpdateLifeTime(t)) system.EliminateParticle(this);
 }

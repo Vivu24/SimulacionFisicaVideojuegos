@@ -78,7 +78,8 @@ void initPhysics(bool interactive)
 	//myFloor = new RenderItem(CreateShape(PxBoxGeometry( 100, 1, 100 )), new PxTransform(0, 0, 0), Vector4(0.5, 0.5, 0.25, 1));
 
 	particleSystem = new ParticleSystem();
-	particleSystem->CreateUniformGenerator(Vector3(0, 0, 0), Vector3(0, 20, 0), 300, 10.0f, 5.0f, SpawnDistribution::UNIFORM, 50.0f, 10);
+	particleSystem->CreateUniformGenerator(PxVec3(0, 0, 0), PxVec3(0, 20, 0), 20, 10.0f, 5.0f, SpawnDistribution::UNIFORM, 50.0f, 10);
+	//particleSystem->CreateNormalGenerator(PxVec3(100, 0, -100), PxVec3(0, 20, 0), 1000, PxVec3(10, 0.0001, 10), 1.0f, SpawnDistribution::NORMAL, 50.0f, 10);
 
 }
 

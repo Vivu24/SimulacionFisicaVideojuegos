@@ -16,7 +16,7 @@ class Particle
 {
 public:
 	Particle(PxVec3 pos, PxVec3 velo, PxVec3 acel, double newMass, double time);	// Particula P1.2
-	Particle(PxVec3 pos, PxVec3 velo, Vector3 acel, double time = 10);	// Particula Generador
+	Particle(PxVec3 pos, PxVec3 velo, PxVec3 acel, double time = 10);	// Particula Generador
 	Particle(Particle const& p);
 	~Particle();
 

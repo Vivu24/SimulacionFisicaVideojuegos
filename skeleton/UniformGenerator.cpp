@@ -15,9 +15,9 @@ Particle* UniformGenerator::generate()
     uniform_real_distribution<float> distY(minVelocity.y, maxVelocity.y);
     uniform_real_distribution<float> distZ(minVelocity.z, maxVelocity.z);
 
-    PxVec3 randomVelocity(distX(random_engine), distY(random_engine), distZ(random_engine));
+    PxVec3 randomVelocity(distX(myRandom), distY(myRandom), distZ(myRandom));
 
-    Particle* particle = new Particle(model_particle);
+    Particle* particle = new Particle(myParticle);
 
     particle->setVelocity(randomVelocity);
     particle->setPosition(calculatePosition());

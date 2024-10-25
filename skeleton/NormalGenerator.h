@@ -7,15 +7,14 @@ using namespace std;
 
 class NormalGenerator : public ParticleGenerator
 {
-private:
-	PxVec3 mediumVel;
-	
-	PxVec3 desviationVel;
-
 public:
-	NormalGenerator(Particle* p, float rate, PxVec3 devV, float spawnR, SpawnDistribution sp);
+	NormalGenerator(Particle* p, float rate, PxVec3 des, float sr, SpawnDistribution sp);
 
 	Particle* generate() override;
+
+private:
+	PxVec3 mediumVel;
+	PxVec3 desviationVel;
 
 };
 
