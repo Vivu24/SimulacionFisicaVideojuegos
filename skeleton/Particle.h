@@ -40,6 +40,9 @@ public:
 	void setIterator(list<Particle*>::iterator it) { myIt = it; }
 	list<Particle*>::iterator getIterator() const { return myIt; }
 
+	void setMass(double m) { mass = m; }
+	double getMass() { return mass; }
+
 	void Update(double t, ParticleSystem& system);
 
 	bool OnRadius();

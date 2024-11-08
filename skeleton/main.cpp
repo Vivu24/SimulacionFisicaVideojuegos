@@ -79,7 +79,12 @@ void initPhysics(bool interactive)
 
 	particleSystem = new ParticleSystem();
 	particleSystem->CreateUniformGenerator(PxVec3(0, 0, 0), PxVec3(0, 20, 0), 20, 10.0f, 5.0f, SpawnDistribution::UNIFORM, 50.0f, 10);
-	//particleSystem->CreateNormalGenerator(PxVec3(100, 0, -100), PxVec3(0, 20, 0), 1000, PxVec3(10, 0.0001, 10), 1.0f, SpawnDistribution::NORMAL, 50.0f, 10);
+	//particleSystem->CreateUniformGenerator(PxVec3(0, 0, 0), PxVec3(0, 20, 0), 10, 1.0f, 10.0f, SpawnDistribution::UNIFORM, 50.0f, 10);
+	//particleSystem->CreateUniformGenerator(PxVec3(-20, 35, -20), PxVec3(10, 0, 0), 40, 20.0f, 25.0f, SpawnDistribution::UNIFORM, 50.0f, 10);
+
+	//particleSystem->CreateNormalGenerator(PxVec3(0, 0, 0), PxVec3(30, 20, -50), 0.1f, PxVec3(3, 3, 3), 2.0f, SpawnDistribution::UNIFORM, 1000.0f, 2);
+
+	//particleSystem->Gravity(1000);
 
 }
 

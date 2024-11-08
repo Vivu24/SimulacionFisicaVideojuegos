@@ -59,7 +59,7 @@ void Particle::Integrate(double t)
 	//velocity *= pow(damping, t);
 	
 	// Actualizamos la posición del transform
-	//transform.p = transform.p + velocity*t;
+	// transform.p = transform.p + velocity*t;
 }
 
 void Particle::SetAcceleration(PxVec3 dir)
@@ -87,7 +87,7 @@ bool Particle::UpdateLifeTime(double t)
 
 void Particle::Update(double t, ParticleSystem& system)
 {
-	cout << "UPDATE PARTICULA" << endl;
+	cout << "UPDATE PARTICULA - Mass: " << mass << endl;
 	//lifeTime -= t;
 	Integrate(t);
 	if (!OnRadius() || UpdateLifeTime(t)) system.EliminateParticle(this);

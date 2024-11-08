@@ -2,7 +2,8 @@
 #include "ParticleSystem.h"
 
 ParticleGenerator::ParticleGenerator(Particle* p, float rate, float sr, SpawnDistribution sd) : 
-	myParticle(*p), creationVelocity(rate), spawnDistance(sr), mySpawnDistribution(sd) {
+	myParticle(*p), creationVelocity(rate), spawnDistance(sr), mySpawnDistribution(sd) 
+{
 	random_device rd;
 	myRandom.seed(rd());
 }
