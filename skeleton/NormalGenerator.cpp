@@ -1,7 +1,7 @@
 #include "NormalGenerator.h"
 
-NormalGenerator::NormalGenerator(Particle* p, float rate, PxVec3 des, float sr, SpawnDistribution sp) :
-	ParticleGenerator(p, rate, sr, sp), mediumVel(p->getVelocity()), desviationVel(des) {}
+NormalGenerator::NormalGenerator(Particle* p, float rate, PxVec3 des, float sr, spawnDistribution sp) :
+    ParticleGenerator(p, rate, sr, sp), mediumVel(p->getVelocity()), desviationVel(des) {}
 
 Particle* NormalGenerator::generate()
 {
@@ -10,6 +10,7 @@ Particle* NormalGenerator::generate()
     normal_distribution<float> distZ(mediumVel.z, desviationVel.z);
 
     PxVec3 randomVelocity(distX(myRandom), distY(myRandom), distZ(myRandom));
+
     Particle* particle = new Particle(myParticle);
 
     particle->setVelocity(randomVelocity);

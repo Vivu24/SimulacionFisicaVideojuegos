@@ -25,6 +25,7 @@ Particle::Particle(PxVec3 pos, PxVec3 velo, PxVec3 acel, double time) :
 	damping = 0.99;
 }
 
+// Constructor de copia
 Particle::Particle(Particle const& p)
 {
 	velocity = p.velocity;
@@ -41,35 +42,13 @@ Particle::Particle(Particle const& p)
 Particle::~Particle()
 {
 	DeregisterRenderItem(renderItem);
-	//renderItem = nullptr;
 }
 
 void Particle::Integrate(double t)
 {
-	//SEMIEULER (Cambiar primera y segunda linea)
+	// SEMIEULER
 	velocity = velocity * pow(damping, t) + acceleration * t;
-	transform.p = transform.p + velocity * t;
-	// Actualizamos la aceleracion
-	//transform.p += velocity * t;
-	//std::cout << transform.p.x << " " << transform.p.y << " " << transform.p.z << "\n ";
-	//// std::cout << myIt._Ptr;
-	//velocity += acceleration * t;
-
-	//// Actualizamos la velocidad
-	//velocity *= pow(damping, t);
-	
-	// Actualizamos la posición del transform
-	// transform.p = transform.p + velocity*t;
-}
-
-void Particle::SetAcceleration(PxVec3 dir)
-{
-	acceleration = dir;
-}
-
-void Particle::SetVelocity(PxVec3 vel)
-{
-	velocity = vel;
+	transform.p = transform.p + velocity * t;  // Actualizamos la posición
 }
 
 bool Particle::OnRadius()
@@ -84,11 +63,10 @@ bool Particle::UpdateLifeTime(double t)
 	return (lifeTime <= 0);
 }
 
-
 void Particle::Update(double t, ParticleSystem& system)
 {
-	cout << "UPDATE PARTICULA - Mass: " << mass << endl;
-	//lifeTime -= t;
 	Integrate(t);
-	if (!OnRadius() || UpdateLifeTime(t)) system.EliminateParticle(this);
+	if (!OnRadius() || UpdateLifeTime(t)) {
+		system.EliminateParticle(this);
+	}
 }

@@ -2,20 +2,30 @@
 #include <vector>
 #include "Particle.h"
 
+enum forceType {
+    GRAVITY,
+    WIND,
+    TORBELLINO,
+    EXPLOSION,
+    NONE
+};
 
 class ForceGenerator
 {
 public:
-	ForceGenerator(double t, bool alive);
-	~ForceGenerator() {};
+    ForceGenerator(forceType forcT, bool alive = true)
+        : type(forcT), alive(alive) {}
 
-	// Métodos Virtuales
-	virtual Vector3 applyForce(Particle* p) = 0;
-	virtual void update(double t) = 0;
+    virtual ~ForceGenerator() {}
 
-	bool isAlive() { return alive_; }
+    // Métodos Virtuales para herencia
+    virtual PxVec3 applyForce(Particle* p) = 0;
+    virtual void update(double t) = 0;
+
+    bool isAlive() const { return alive; }
+    forceType getType() const { return type; }
+
 protected:
-	double time_;
-	bool alive_;
+    bool alive;
+    forceType type;
 };
-

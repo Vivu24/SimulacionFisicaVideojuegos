@@ -1,36 +1,35 @@
 #pragma once
 #include "Particle.h"
 #include <random>
+#include "ForceGenerator.h"
 
-using namespace std;
-
-class ParticleSystem;	// Evitar Errores Circulares
 
 // Tipo de Distribución
-enum SpawnDistribution{
-	UNIFORM,
-	NORMAL
+enum spawnDistribution {
+    UNIFORM,
+    NORMAL
 };
 
 class ParticleGenerator
 {
 public:
-	ParticleGenerator(Particle* p, float rate, float sr, SpawnDistribution sd);
+    ParticleGenerator(Particle* p, float rate, float sr, spawnDistribution sd);
 
-	virtual Particle* generate() = 0;
-	
-	PxVec3 calculatePosition();
+    virtual Particle* generate() = 0;
 
-	void update(double t, ParticleSystem& pS);
+    PxVec3 calculatePosition();
 
-	float getEmissionRate() const { return creationVelocity; }
+    void update(double t, ParticleSystem& pS);
 
-protected:	// Para la distribución Normal y Uniforme
-	mt19937 myRandom;
-	float creationVelocity;
-	float lastTimed = 0;
-	float spawnDistance;
-	SpawnDistribution mySpawnDistribution;
-	Particle myParticle;
+    float getEmissionRate() const { return creationVelocity; }
+protected:
+    mt19937 myRandom;
+    float creationVelocity;
+    float lastTimed = 0;
+    float spawnDistance;
+    spawnDistribution mySpawnDistribution;
+    Particle myParticle;
+
+    list<Particle*> emittedParticles;
+    vector<ForceGenerator*> linkedForces;
 };
-

@@ -12,7 +12,8 @@
 
 using namespace Snippets;
 
-typedef physx::PxVec3 Vector3;
+typedef physx::PxVec3 
+;
 typedef physx::PxVec4 Vector4;
 
 

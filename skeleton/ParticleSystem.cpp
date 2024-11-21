@@ -1,6 +1,5 @@
 #include "ParticleSystem.h"
 
-
 ParticleSystem::~ParticleSystem()
 {
 	for (auto particle : particles) {
@@ -28,56 +27,67 @@ ParticleSystem::~ParticleSystem()
 	forcesToErase.clear();
 }
 
-void ParticleSystem::Update(double t) {
+void ParticleSystem::Update(double t)
+{
+    particlesToErase.clear();  // Limpiar la lista de partículas a eliminar
 
-	particlesToErase.clear();
+    for (auto generator : generators) {
+        if (generator != nullptr)
+            generator->update(t, *this);  // Actualiza cada generador
+    }
 
-	for (auto generator : generators) {
-		if (generator != nullptr)
-			generator->update(t, *this);
-	}
+    // Aplicar fuerzas
+    /*for (auto f : forces) {
+        if (f != nullptr && f->isAlive()) {
+            for (auto it = particles.begin(); it != particles.end(); ++it) {
+                if (*it != nullptr) {
+                    PxVec3 force = f->applyForce(*it);
+                    (*it)->ApplyForce(force);
+                }
+            }
+        }
+    }*/
 
-	for (auto it = particles.begin(); it != particles.end(); ) {
-		if (*it != nullptr) {
-			(*it)->Update(t, *this);
-			it++;
-		}
-	}
+    for (auto it = particles.begin(); it != particles.end(); ) {
+        if (*it != nullptr) {
+            (*it)->Update(t, *this);
+            it++;
+        }
+    }
 
-	for (auto p : particlesToErase) {
-		cout << "Borra" << endl;
-		auto it = find(particles.begin(), particles.end(), p);
-		if (it != particles.end()) {
-			particles.erase(it);
-			delete p;
-		}
-	}
+    for (auto p : particlesToErase) {
+        auto it = find(particles.begin(), particles.end(), p);
+        if (it != particles.end()) {
+            particles.erase(it);
+            delete p;
+        }
+    }
 
+    for (auto f : forcesToErase) {
+        auto it = find(forces.begin(), forces.end(), f);
+        if (it != forces.end()) {
+            forces.erase(it);
+            delete f;
+        }
+    }
 
-	//Fuerzas
-	for (auto f : forces) {
-		if (f) {
-			f->update(t);
-		}
-	}
-	//Eliminacion particulas
-	//for (auto p : forcesToErase) {
-	//	auto it = find(particles.begin(), particles.end(), p);
-	//	if (it != particles.end()) {
-	//		particles.erase(it);
-	//		delete p;
-	//	}
-	//}
-	////Eliminacion fuerzas
-	for (auto f : forcesToErase) {
-		auto it = find(forces.begin(), forces.end(), f);
-		if (it != forces.end()) {
-			forces.erase(it);
-			delete f;
-		}
-	}
-	
+    // Aplica las fuerzas bien
+    for (auto f : forces) {
+        if (f != nullptr && f->isAlive()) {
+            // Update de cada generador
+            f->update(t);
+
+            //Fuerza a cada partícula
+            for (auto it = particles.begin(); it != particles.end(); ++it) {
+                if (*it != nullptr) {
+                    PxVec3 force = f->applyForce(*it);
+                    (*it)->ApplyForce(force);
+                }
+            }
+        }
+    }
 }
+
 
 void ParticleSystem::EliminateParticle(Particle* p) {
 	if (p != nullptr && p->getIterator() != particles.end())
@@ -86,25 +96,69 @@ void ParticleSystem::EliminateParticle(Particle* p) {
 
 void ParticleSystem::AddParticle(Particle* p) {
 	particles.push_back(p);
- 	p->setIterator(--particles.end());
+	p->setIterator(--particles.end());
 }
 
-void ParticleSystem::CreateUniformGenerator(PxVec3 pos, PxVec3 direction, float rate, float range, float sr, SpawnDistribution sd, float rat, float lifetime)
+void ParticleSystem::CreateUniformGenerator(PxVec3 pos, PxVec3 direction, float rate, float range, float sr, spawnDistribution sd, float rat, float lifetime)
 {
+	// Partícula modelo
 	Particle p = Particle(pos, direction, PxVec3(0, -5, 0), lifetime);
 	p.setRadius(rat);
 
 	generators.push_back(new UniformGenerator(&p, rate, range, sr, sd));
 }
 
-void ParticleSystem::CreateNormalGenerator(PxVec3 pos, PxVec3 direction, float rate, PxVec3 des, float sr, SpawnDistribution sd, float rat, float lifetime)
+void ParticleSystem::CreateNormalGenerator(PxVec3 pos, PxVec3 direction, float rate, PxVec3 des, float sr, spawnDistribution sd, float rat, float lifetime)
 {
+	// Partícula modelo
 	Particle p = Particle(pos, direction, PxVec3(0, -5, 0), lifetime);
 	p.setRadius(rat);
+
 	generators.push_back(new NormalGenerator(&p, rate, des, sr, sd));
+
 }
 
 void ParticleSystem::Gravity(double g)
 {
-	forces.push_back(new GravityGenerator(g, -1.0));
+    forces.push_back(new GravityGenerator(g));
 }
+
+void ParticleSystem::Wind(PxVec3 center, PxVec3 size, PxVec3 windVelocity, float rozCoef)
+{
+    forces.push_back(new WindGenerator(center, size, windVelocity, rozCoef));
+}
+
+void ParticleSystem::Whirlwind(PxVec3 center, PxVec3 size, float rozCoef, float intensity)
+{
+    forces.push_back(new WhirlwindGenerator(center, size, rozCoef, intensity));
+}
+
+void ParticleSystem::Explosion(float intensity, float radius, float tau)
+{
+    forces.push_back(new ExplosionGenerator(this, PxVec3(0, 0, 0), PxVec3(radius, radius, radius), intensity, 0.0, tau));
+}
+
+// Activar Explosión
+void ParticleSystem::TriggerExplosion(PxVec3 position)
+{
+    for (auto& force : forces)
+    {
+        // Si la fuerza es explosión
+        if (force->getType() == EXPLOSION)
+        {
+            // Para llamar a resetExplosion
+            ExplosionGenerator* explosion = static_cast<ExplosionGenerator*>(force);
+            if (explosion)
+            {
+                // Reinicia la explosión con la nueva posición
+                explosion->resetExplosion(position);
+            }
+        }
+    }
+}
+
+
+
+
+
+

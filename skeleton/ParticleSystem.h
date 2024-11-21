@@ -9,6 +9,9 @@
 #include "UniformGenerator.h"
 #include "ForceGenerator.h"
 #include "GravityGenerator.h"
+#include "WindGenerator.h"
+#include "WhirlwindGenerator.h"
+#include "ExplosionGenerator.h"
 
 using namespace physx;
 using namespace std;
@@ -16,30 +19,32 @@ using namespace std;
 class ParticleSystem
 {
 public:
-	ParticleSystem() {};
+	ParticleSystem() {}  // Constructor por defecto
 
-	//ParticleSystem(PxVec3 v);
 	~ParticleSystem();
 
 	void Update(double t);
+
 	void EliminateParticle(Particle* particle);
 	void AddParticle(Particle* p);
 
-	void CreateUniformGenerator(PxVec3 pos, PxVec3 direction, float rate, float range, float sr, SpawnDistribution sd, float rat, float lifetime = 15.0f);
-	void CreateNormalGenerator(PxVec3 pos, PxVec3 direction, float rate, PxVec3 des, float sr, SpawnDistribution sd, float rat, float lifetime = 15.0f);
+	void CreateUniformGenerator(PxVec3 pos, PxVec3 direction, float rate, float range, float sr, spawnDistribution sd, float rat, float lifetime = 15.0f);
+	void CreateNormalGenerator(PxVec3 pos, PxVec3 direction, float rate, PxVec3 des, float sr, spawnDistribution sd, float rat, float lifetime = 15.0f);
 
-	// P3
+	//-----------------------------//
+	// FUERZAS
 	void Gravity(double g);
+	void Wind(PxVec3 center, PxVec3 size, PxVec3 windVelocity, float rozCoef);
+	void Whirlwind(PxVec3 center, PxVec3 size, float rozCoef, float intensity);
+	// Explosion
+	void Explosion(float intensity, float radius, float tau);
+	void TriggerExplosion(PxVec3 position);
+	//-----------------------------// 
 
-private:
 	list<Particle*> particles;
 	list<ParticleGenerator*> generators;
 	vector<Particle*> particlesToErase;
 
-	// P3
 	list<ForceGenerator*> forces;
 	vector<ForceGenerator*> forcesToErase;
-
-	//PxVec3 orig;
 };
-

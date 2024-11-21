@@ -1,6 +1,6 @@
 #include "UniformGenerator.h"
 
-UniformGenerator::UniformGenerator(Particle* p, float rate, float range, float spawnRange, SpawnDistribution sp) :
+UniformGenerator::UniformGenerator(Particle* p, float rate, float range, float spawnRange, spawnDistribution sp) :
     ParticleGenerator(p, rate, spawnRange, sp)
 {
     PxVec3 vel = p->getVelocity();
