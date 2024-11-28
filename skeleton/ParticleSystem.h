@@ -12,6 +12,7 @@
 #include "WindGenerator.h"
 #include "WhirlwindGenerator.h"
 #include "ExplosionGenerator.h"
+#include "SpringForceGenerator.h"
 
 using namespace physx;
 using namespace std;
@@ -39,6 +40,9 @@ public:
 	// Explosion
 	void Explosion(float intensity, float radius, float tau);
 	void TriggerExplosion(PxVec3 position);
+
+	// MUELLES
+	void Spring();
 	//-----------------------------// 
 
 	list<Particle*> particles;

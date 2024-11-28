@@ -50,6 +50,12 @@ public:
 
 	void ApplyForce(PxVec3 force) { acceleration += force / mass; }
 
+	PxTransform getTransform() { return transform; }
+
+	void setRenderItem(RenderItem * ri) { renderItem = ri; }
+
+	RenderItem* getRenderItem() { return renderItem; }
+
 private:
 
 	PxVec3 velocity;

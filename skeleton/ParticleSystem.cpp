@@ -1,4 +1,4 @@
-#include "ParticleSystem.h"
+ï»¿#include "ParticleSystem.h"
 
 ParticleSystem::~ParticleSystem()
 {
@@ -29,14 +29,14 @@ ParticleSystem::~ParticleSystem()
 
 void ParticleSystem::Update(double t)
 {
-    particlesToErase.clear();  // Limpiar la lista de partículas a eliminar
+    particlesToErase.clear();  // Limpiar la lista de particulas a eliminar
 
     for (auto generator : generators) {
         if (generator != nullptr)
             generator->update(t, *this);  // Actualiza cada generador
     }
 
-    // Aplicar fuerzas
+    // Aplicar fuerzas  NOBORRAR
     /*for (auto f : forces) {
         if (f != nullptr && f->isAlive()) {
             for (auto it = particles.begin(); it != particles.end(); ++it) {
@@ -77,7 +77,7 @@ void ParticleSystem::Update(double t)
             // Update de cada generador
             f->update(t);
 
-            //Fuerza a cada partícula
+            //Fuerza a cada particula
             for (auto it = particles.begin(); it != particles.end(); ++it) {
                 if (*it != nullptr) {
                     PxVec3 force = f->applyForce(*it);
@@ -101,7 +101,7 @@ void ParticleSystem::AddParticle(Particle* p) {
 
 void ParticleSystem::CreateUniformGenerator(PxVec3 pos, PxVec3 direction, float rate, float range, float sr, spawnDistribution sd, float rat, float lifetime)
 {
-	// Partícula modelo
+	// PartÃ­cula modelo
 	Particle p = Particle(pos, direction, PxVec3(0, -5, 0), lifetime);
 	p.setRadius(rat);
 
@@ -110,7 +110,7 @@ void ParticleSystem::CreateUniformGenerator(PxVec3 pos, PxVec3 direction, float 
 
 void ParticleSystem::CreateNormalGenerator(PxVec3 pos, PxVec3 direction, float rate, PxVec3 des, float sr, spawnDistribution sd, float rat, float lifetime)
 {
-	// Partícula modelo
+	// PartÃ­cula modelo
 	Particle p = Particle(pos, direction, PxVec3(0, -5, 0), lifetime);
 	p.setRadius(rat);
 
@@ -138,23 +138,27 @@ void ParticleSystem::Explosion(float intensity, float radius, float tau)
     forces.push_back(new ExplosionGenerator(this, PxVec3(0, 0, 0), PxVec3(radius, radius, radius), intensity, 0.0, tau));
 }
 
-// Activar Explosión
+// Activar ExplosiÃ³n
 void ParticleSystem::TriggerExplosion(PxVec3 position)
 {
     for (auto& force : forces)
     {
-        // Si la fuerza es explosión
+        // Si la fuerza es explosiÃ³n
         if (force->getType() == EXPLOSION)
         {
             // Para llamar a resetExplosion
             ExplosionGenerator* explosion = static_cast<ExplosionGenerator*>(force);
             if (explosion)
             {
-                // Reinicia la explosión con la nueva posición
+                // Reinicia la explosiÃ³n con la nueva posiciÃ³n
                 explosion->resetExplosion(position);
             }
         }
     }
+}
+
+void ParticleSystem::Spring()
+{
 }
 
 

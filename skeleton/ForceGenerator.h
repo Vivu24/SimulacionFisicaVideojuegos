@@ -7,6 +7,7 @@ enum forceType {
     WIND,
     TORBELLINO,
     EXPLOSION,
+    SPRING,
     NONE
 };
 

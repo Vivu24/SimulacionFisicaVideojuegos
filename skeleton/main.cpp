@@ -43,6 +43,13 @@ vector<Particle*> particles;
 
 PxTransform pruebaTR;
 
+Particle * anchor = nullptr;              // Partícula fija (anclaje del muelle)
+Particle* dynamicParticle = nullptr;
+SpringForceGenerator* spring = nullptr;
+
+RenderItem* anchorRenderItem = NULL;
+RenderItem* dynamicRenderItem = NULL;
+
 // Initialize physics engine
 void initPhysics(bool interactive)
 {    
@@ -82,9 +89,61 @@ void initPhysics(bool interactive)
 
     //particleSystem->Wind(PxVec3(0, 0, 0), PxVec3(10, 10, 10), PxVec3(20, 0, 0), 0.1f);
 
-    particleSystem->Whirlwind(PxVec3(0.0f, 0.0f, 0.0f), PxVec3(15.0f, 100.0f, 15.0f), 0.5f, 5.0f);
+    //particleSystem->Whirlwind(PxVec3(0.0f, 0.0f, 0.0f), PxVec3(15.0f, 100.0f, 15.0f), 0.5f, 5.0f);
 
-    //particleSystem->Explosion(100.0f, 20.0f, 1.0f);  // Intensidad 100, radio 20, tau 1
+    particleSystem->Explosion(100.0f, 20.0f, 1.0f);  // Intensidad 100, radio 20, tau 1
+
+    //particleSystem->Spring();
+
+    #pragma region Muelle
+
+
+    // MUELLELELELELE
+    anchor = new Particle(
+        { 0.0f, 10.0f, 0.0f }, // Pos
+        { 0.0f, 0.0f, 0.0f },  // Vel
+        { 0.0f, 0.0f, 0.0f },  // Acel
+        0.0,                   // Masa
+        0.0                    // Vida
+    );
+    anchor->setRadius(0.5f);
+
+    dynamicParticle = new Particle(
+        { 0.0f, 5.0f, 0.0f },   // Init Pos
+        { 0.0f, 0.0f, 0.0f },   // Init Vel
+        { 0.0f, -9.8f, 0.0f },  // Gravedad Inicial
+        1.0,                    // Masa
+        10.0                    // vida
+    );
+    dynamicParticle->setRadius(1.0f);
+    
+    anchorRenderItem = new RenderItem(
+        CreateShape(PxSphereGeometry(anchor->getRadius())),
+        new PxTransform(anchor->getTransform()),
+        { 1.0f, 0.0f, 0.0f, 1.0f }   // Rojo
+    );
+
+    dynamicRenderItem = new RenderItem(
+        CreateShape(PxSphereGeometry(dynamicParticle->getRadius())),
+        new PxTransform(dynamicParticle->getTransform()),
+        { 0.0f, 1.0f, 0.0f, 1.0f }  // Verde
+    );
+
+    anchor->setRenderItem(anchorRenderItem);
+    dynamicParticle->setRenderItem(dynamicRenderItem);
+
+
+
+    spring = new SpringForceGenerator(
+        10.0f,  //Const Elást
+        5.0f,   // Longitud en reposo
+        anchor  // Partícula fija
+    );
+
+    particleSystem->AddParticle(anchor);
+    particleSystem->AddParticle(dynamicParticle);
+    particleSystem->forces.push_back(spring);
+    #pragma endregion
 }
 
 /*void checkParticlesHigh() {
@@ -103,6 +162,15 @@ void initPhysics(bool interactive)
 void stepPhysics(bool interactive, double t)
 {
     particleSystem->Update(t);
+
+    //Actualizar RenderItems    (NO FUNCA)
+    //for (Particle* particle : particleSystem->particles) {
+    //    if (particle->getRenderItem() != nullptr) {
+    //        particle->getRenderItem()->transform->p = particle->getTransform().p;
+    //    }
+    //}
+
+
     PX_UNUSED(interactive);
     gScene->simulate(t);
     gScene->fetchResults(true);
@@ -127,6 +195,21 @@ void cleanupPhysics(bool interactive)
 {
     PX_UNUSED(interactive);
 
+
+    // MIO
+    for (Particle* p : particles) {
+        delete p;
+    }
+    particles.clear();  // Limpiar vector
+
+    for (ForceGenerator* f : particleSystem->forces) {
+        delete f;
+    }
+    particleSystem->forces.clear();
+
+    delete particleSystem;
+    particleSystem = nullptr;
+
     // Rigid Body ++++++++++++++++++++++++++++++++++++++++++
     gScene->release();
     gDispatcher->release();
@@ -137,6 +220,9 @@ void cleanupPhysics(bool interactive)
     transport->release();
 
     gFoundation->release();
+
+    
+
 }
 
 // Function called when a key is pressed

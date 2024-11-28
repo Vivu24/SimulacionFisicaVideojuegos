@@ -20,7 +20,7 @@ public:
     bool exploding = false;
     float _k;  // Constante de la explosión
     double currentTime;
-    double _tau;
+    double explosionTime;
     PxVec3 force;
     PxVec3 position;
     PxVec3 influenceArea;
