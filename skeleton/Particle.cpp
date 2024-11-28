@@ -1,6 +1,21 @@
 #include "Particle.h"
 #include "ParticleSystem.h"
 
+
+Particle::Particle()
+{
+	velocity = PxVec3(0,0,0);
+	acceleration = PxVec3(0, 0, 0);
+	transform = PxTransform(PxVec3(0, 0, 0));
+	PxShape* shape = CreateShape(PxSphereGeometry(1));
+	renderItem = new RenderItem(shape, &transform, Vector4(1, 0.5, 1, 1));
+	genOrig = PxVec3(0, 0, 0);
+	radius = 5000;
+	lifeTime = 100;
+	damping = 0.99;
+	mass = 1;
+}
+
 Particle::Particle(PxVec3 pos, PxVec3 velo, PxVec3 acel, double newMass, double time) :
 	velocity(velo), acceleration(acel), mass(newMass), lifeTime(time)
 {
@@ -37,6 +52,7 @@ Particle::Particle(Particle const& p)
 	radius = p.radius;
 	lifeTime = p.lifeTime;
 	damping = 0.99;
+	mass = p.mass;
 }
 
 Particle::~Particle()

@@ -43,7 +43,7 @@ vector<Particle*> particles;
 
 PxTransform pruebaTR;
 
-Particle * anchor = nullptr;              // Partícula fija (anclaje del muelle)
+Particle* anchor = nullptr;              // Partícula fija (anclaje del muelle)
 Particle* dynamicParticle = nullptr;
 SpringForceGenerator* spring = nullptr;
 
@@ -81,69 +81,44 @@ void initPhysics(bool interactive)
 
     // Sistema de Partículas
     particleSystem = new ParticleSystem();
-    particleSystem->CreateUniformGenerator(PxVec3(0, 0, 0), PxVec3(0, 20, 0), 20, 10.0f, 5.0f, spawnDistribution::UNIFORM, 50.0f, 10);
+    //particleSystem->CreateUniformGenerator(PxVec3(0, 0, 0), PxVec3(0, 20, 0), 20, 10.0f, 5.0f, spawnDistribution::UNIFORM, 50.0f, 10);
     
     // Práctica 3
     
-    //particleSystem->Gravity(-3);
+    particleSystem->Gravity(0.001);
 
     //particleSystem->Wind(PxVec3(0, 0, 0), PxVec3(10, 10, 10), PxVec3(20, 0, 0), 0.1f);
 
     //particleSystem->Whirlwind(PxVec3(0.0f, 0.0f, 0.0f), PxVec3(15.0f, 100.0f, 15.0f), 0.5f, 5.0f);
 
-    particleSystem->Explosion(100.0f, 20.0f, 1.0f);  // Intensidad 100, radio 20, tau 1
+    //particleSystem->Explosion(100.0f, 20.0f, 1.0f);  // Intensidad 100, radio 20, tau 1
 
-    //particleSystem->Spring();
+    particleSystem->Spring();
 
     #pragma region Muelle
+    // Crear la partícula dinámica
+    Particle particula;
+    dynamicParticle = new Particle(particula);
 
+    // Crear la partícula ancla (fija)
+    Particle anchorParticula;  // Usamos el constructor predeterminado
+    anchor = new Particle(anchorParticula);  // La partícula ancla
 
-    // MUELLELELELELE
-    anchor = new Particle(
-        { 0.0f, 10.0f, 0.0f }, // Pos
-        { 0.0f, 0.0f, 0.0f },  // Vel
-        { 0.0f, 0.0f, 0.0f },  // Acel
-        0.0,                   // Masa
-        0.0                    // Vida
-    );
-    anchor->setRadius(0.5f);
-
-    dynamicParticle = new Particle(
-        { 0.0f, 5.0f, 0.0f },   // Init Pos
-        { 0.0f, 0.0f, 0.0f },   // Init Vel
-        { 0.0f, -9.8f, 0.0f },  // Gravedad Inicial
-        1.0,                    // Masa
-        10.0                    // vida
-    );
-    dynamicParticle->setRadius(1.0f);
-    
-    anchorRenderItem = new RenderItem(
-        CreateShape(PxSphereGeometry(anchor->getRadius())),
-        new PxTransform(anchor->getTransform()),
-        { 1.0f, 0.0f, 0.0f, 1.0f }   // Rojo
-    );
-
-    dynamicRenderItem = new RenderItem(
-        CreateShape(PxSphereGeometry(dynamicParticle->getRadius())),
-        new PxTransform(dynamicParticle->getTransform()),
-        { 0.0f, 1.0f, 0.0f, 1.0f }  // Verde
-    );
-
-    anchor->setRenderItem(anchorRenderItem);
-    dynamicParticle->setRenderItem(dynamicRenderItem);
-
-
-
-    spring = new SpringForceGenerator(
-        10.0f,  //Const Elást
-        5.0f,   // Longitud en reposo
-        anchor  // Partícula fija
-    );
-
-    particleSystem->AddParticle(anchor);
+    // Añadir las partículas al sistema
     particleSystem->AddParticle(dynamicParticle);
+    particleSystem->AddParticle(anchor);  // Añadir también el ancla
+
+    // Crear el muelle entre la partícula ancla y la partícula dinámica
+    spring = new SpringForceGenerator(
+        10.0f,  // Constante elástica
+        5.0f,   // Longitud en reposo
+        anchor  // Partícula fija (ancla)
+    );
+
+    // Añadir el generador de fuerza del muelle al sistema de partículas
     particleSystem->forces.push_back(spring);
     #pragma endregion
+
 }
 
 /*void checkParticlesHigh() {
