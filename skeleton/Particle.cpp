@@ -83,6 +83,6 @@ void Particle::Update(double t, ParticleSystem& system)
 {
 	Integrate(t);
 	if (!OnRadius() || UpdateLifeTime(t)) {
-		system.EliminateParticle(this);
+		//system.EliminateParticle(this);
 	}
 }

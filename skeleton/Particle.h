@@ -49,7 +49,7 @@ public:
 
 	bool OnRadius();
 
-	void ApplyForce(PxVec3 force) { acceleration += force / mass; }
+	void ApplyForce(PxVec3 force) { acceleration = force / mass; }
 
 	PxTransform getTransform() { return transform; }
 

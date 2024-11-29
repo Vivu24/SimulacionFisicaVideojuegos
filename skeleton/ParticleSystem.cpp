@@ -159,16 +159,30 @@ void ParticleSystem::TriggerExplosion(PxVec3 position)
 
 void ParticleSystem::Spring()
 {
+    cout << "SPRING NORMAL" << endl;
     // First one standard spring uniting 2 particles
-    Particle* p1 = new Particle({ -10, 10, 0 }, { 0,0,0 }, { 0,0,0 }, 0.85, 60);
-    Particle* p2 = new Particle({ 10, 10, 0 }, { 0,0,0 }, { 0,0,0 }, 0.85, 60);
-    p2->setMass(2.0);
+    Particle* p1 = new Particle({ -20, 10, 0 }, { 0,0,0 }, { 0,0,0 }, 5, 60);
+    Particle* p2 = new Particle({ 20, 10, 0 }, { 0,0,0 }, { 0,0,0 }, 5, 60);
     SpringForceGenerator* f1 = new SpringForceGenerator(1, 10, p2);
-    forces.push_back(f1);
     SpringForceGenerator* f2 = new SpringForceGenerator(1, 10, p1);
     forces.push_back(f2);
-    particles.push_back(p1);
-    particles.push_back(p2);
+    forces.push_back(f1);
+    AddParticle(p1);
+    AddParticle(p2);
+}
+
+void ParticleSystem::Anchor()
+{
+    cout << "ANCHOR" << endl;
+    // First one standard spring uniting 2 particles
+    AnchoredSpringFG* anchor = new AnchoredSpringFG(0.5, 10, {-10, 10, 0});
+    Particle* particle = new Particle({ 10, 10, 0 }, { 0,0,0 }, { 0,0,0 }, 1, 60);
+    
+    forces.push_back(anchor);
+    //SpringForceGenerator* f2 = new SpringForceGenerator(0.1, 10, anchor);
+    //forces.push_back(f2);
+    //particles.push_back(anchor);
+    particles.push_back(particle);
 }
 
 

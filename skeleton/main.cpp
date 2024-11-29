@@ -81,20 +81,22 @@ void initPhysics(bool interactive)
 
     // Sistema de Partículas
     particleSystem = new ParticleSystem();
-    //particleSystem->CreateUniformGenerator(PxVec3(0, 0, 0), PxVec3(0, 20, 0), 20, 10.0f, 5.0f, spawnDistribution::UNIFORM, 50.0f, 10);
+    particleSystem->CreateUniformGenerator(PxVec3(0, 0, 0), PxVec3(0, 20, 0), 20, 10.0f, 5.0f, spawnDistribution::UNIFORM, 50.0f, 10);
     
     // Práctica 3
     
-    particleSystem->Gravity(0.001);
+    //particleSystem->Gravity(300);
 
-    //particleSystem->Wind(PxVec3(0, 0, 0), PxVec3(10, 10, 10), PxVec3(20, 0, 0), 0.1f);
+    //particleSystem->Wind(PxVec3(0, 0, 0), PxVec3(10, 10, 10), PxVec3(20, 0, 0), 20);
 
-    //particleSystem->Whirlwind(PxVec3(0.0f, 0.0f, 0.0f), PxVec3(15.0f, 100.0f, 15.0f), 0.5f, 5.0f);
+    //particleSystem->Whirlwind(PxVec3(0.0f, 0.0f, 0.0f), PxVec3(15.0f, 100.0f, 15.0f), 0.5f, 500.0f);
 
-    //particleSystem->Explosion(100.0f, 20.0f, 1.0f);  // Intensidad 100, radio 20, tau 1
+    //particleSystem->Explosion(1000.0f, 20.0f, 10.0f);  // Intensidad 100, radio 20, tau 1
+    // Explosion con a +=
 
-    particleSystem->Spring();
+    //particleSystem->Spring();           // += en applyforce
 
+    //particleSystem->Anchor();
     #pragma region Muelle
     //// Crear la partícula dinámica
     //Particle particula;

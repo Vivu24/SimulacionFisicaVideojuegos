@@ -13,6 +13,7 @@
 #include "WhirlwindGenerator.h"
 #include "ExplosionGenerator.h"
 #include "SpringForceGenerator.h"
+#include "AnchoredSpringFG.h"
 
 using namespace physx;
 using namespace std;
@@ -43,6 +44,7 @@ public:
 
 	// MUELLES
 	void Spring();
+	void Anchor();
 	//-----------------------------// 
 
 	list<Particle*> particles;
