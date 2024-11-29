@@ -96,27 +96,27 @@ void initPhysics(bool interactive)
     particleSystem->Spring();
 
     #pragma region Muelle
-    // Crear la partícula dinámica
-    Particle particula;
-    dynamicParticle = new Particle(particula);
+    //// Crear la partícula dinámica
+    //Particle particula;
+    //dynamicParticle = new Particle(particula);
 
-    // Crear la partícula ancla (fija)
-    Particle anchorParticula;  // Usamos el constructor predeterminado
-    anchor = new Particle(anchorParticula);  // La partícula ancla
+    //// Crear la partícula ancla (fija)
+    //Particle anchorParticula;  // Usamos el constructor predeterminado
+    //anchor = new Particle(anchorParticula);  // La partícula ancla
 
-    // Añadir las partículas al sistema
-    particleSystem->AddParticle(dynamicParticle);
-    particleSystem->AddParticle(anchor);  // Añadir también el ancla
+    //// Añadir las partículas al sistema
+    //particleSystem->AddParticle(dynamicParticle);
+    //particleSystem->AddParticle(anchor);  // Añadir también el ancla
 
-    // Crear el muelle entre la partícula ancla y la partícula dinámica
-    spring = new SpringForceGenerator(
-        10.0f,  // Constante elástica
-        5.0f,   // Longitud en reposo
-        anchor  // Partícula fija (ancla)
-    );
+    //// Crear el muelle entre la partícula ancla y la partícula dinámica
+    //spring = new SpringForceGenerator(
+    //    10.0f,  // Constante elástica
+    //    5.0f,   // Longitud en reposo
+    //    anchor  // Partícula fija (ancla)
+    //);
 
-    // Añadir el generador de fuerza del muelle al sistema de partículas
-    particleSystem->forces.push_back(spring);
+    //// Añadir el generador de fuerza del muelle al sistema de partículas
+    //particleSystem->forces.push_back(spring);
     #pragma endregion
 
 }
