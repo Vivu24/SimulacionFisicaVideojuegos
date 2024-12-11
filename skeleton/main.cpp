@@ -85,7 +85,7 @@ void initPhysics(bool interactive)
     
     // Práctica 3
     
-    //particleSystem->Gravity(100);
+    //particleSystem->Gravity(5);
 
     //particleSystem->Wind(PxVec3(0, 0, 0), PxVec3(10, 10, 10), PxVec3(20, 0, 0), 20);
 
@@ -96,7 +96,12 @@ void initPhysics(bool interactive)
 
     //particleSystem->Spring();           // += en applyforce
 
-    particleSystem->Anchor();
+    //particleSystem->Anchor();
+
+    /*Particle* particle = new Particle({ 0, 0, 0 }, { 0,0,0 }, { 0,0,0 }, 1, 60);
+    particleSystem->AddParticle(particle);*/
+    particleSystem->Buoyancy(1, 1, 1);
+
     #pragma region Muelle
     //// Crear la partícula dinámica
     //Particle particula;

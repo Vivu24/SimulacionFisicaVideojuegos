@@ -205,6 +205,20 @@ void ParticleSystem::Anchor()
     particles.push_back(particle);
 }
 
+void ParticleSystem::Buoyancy(float h, float V, float d)
+{
+    Particle* particle = new Particle({ 0, 30, 0 }, { 0,0,0 }, { 0,0,0 }, 1, 60);
+    Particle* water = new Particle({ 0, 50, 0 }, { 0,0,0 }, { 0,0,0 }, 1000, 60);
+
+    particles.push_back(particle);
+    particles.push_back(water);
+
+    BuoyancyForceGenerator* buoyancy = new BuoyancyForceGenerator(h, V, d);
+    buoyancy->setLiquidParticle(water);
+    forces.push_back(buoyancy);
+
+}
+
 
 
 

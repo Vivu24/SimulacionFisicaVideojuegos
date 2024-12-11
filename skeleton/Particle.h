@@ -12,6 +12,7 @@ using namespace std;
 
 class ParticleSystem;
 
+
 class Particle
 {
 public:
