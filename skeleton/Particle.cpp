@@ -23,6 +23,7 @@ Particle::Particle(PxVec3 pos, PxVec3 velo, PxVec3 acel, double newMass, double 
 	PxSphereGeometry geo(1);
 	PxShape* shape = CreateShape(geo);
 
+	radius = 5000;
 	renderItem = new RenderItem(shape, &transform, Vector4(1, 0.5, 1, 1));
 	RegisterRenderItem(renderItem);
 	damping = 0.99;
@@ -35,6 +36,7 @@ Particle::Particle(PxVec3 pos, PxVec3 velo, PxVec3 acel, double time) :
 	PxSphereGeometry geo(1);
 	PxShape* shape = CreateShape(geo);
 
+	radius = 5000;
 	renderItem = new RenderItem(shape, &transform, Vector4(1, 0.5, 1, 1));
 	RegisterRenderItem(renderItem);
 	damping = 0.99;
@@ -45,7 +47,8 @@ Particle::Particle(Particle const& p)
 {
 	velocity = p.velocity;
 	acceleration = p.acceleration;
-	transform = PxTransform(p.transform.p);
+	transform = p.transform;
+	//transform = PxTransform(p.transform.p);
 	PxShape* shape = CreateShape(PxSphereGeometry(1));
 	renderItem = new RenderItem(shape, &transform, Vector4(1, 0.5, 1, 1));
 	genOrig = p.genOrig;
@@ -82,7 +85,7 @@ bool Particle::UpdateLifeTime(double t)
 void Particle::Update(double t, ParticleSystem& system)
 {
 	Integrate(t);
-	if (!OnRadius() || UpdateLifeTime(t)) {
-		//system.EliminateParticle(this);
+	if (UpdateLifeTime(t)) {		//!OnRadius() || 
+		system.EliminateParticle(this);
 	}
 }

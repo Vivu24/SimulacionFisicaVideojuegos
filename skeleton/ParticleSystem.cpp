@@ -29,34 +29,41 @@ ParticleSystem::~ParticleSystem()
 
 void ParticleSystem::Update(double t)
 {
-    particlesToErase.clear();  // Limpiar la lista de particulas a eliminar
+    particlesToErase.clear();
+    forcesToErase.clear();
+    //gToErase.clear();
 
-    for (auto generator : generators) {
-        if (generator != nullptr)
-            generator->update(t, *this);  // Actualiza cada generador
+    // Actualizar todos los generadores
+    for (auto g : generators) {
+        if (g != nullptr) {
+            g->update(t, *this);
+        }
     }
 
-    // Aplicar fuerzas  NOBORRAR
-    /*for (auto f : forces) {
-        if (f != nullptr && f->isAlive()) {
-            for (auto it = particles.begin(); it != particles.end(); ++it) {
-                if (*it != nullptr) {
-                    PxVec3 force = f->applyForce(*it);
-                    (*it)->ApplyForce(force);
-                }
-            }
-        }
-    }*/
-
+    // Actualizar todas las partículas
     for (auto it = particles.begin(); it != particles.end(); ) {
         if (*it != nullptr) {
+            // Reiniciar aceleración a cero
+            (*it)->SetAcceleration(PxVec3(0, 0, 0));
+
+            // Aplicar fuerzas (como gravedad) a la aceleracion
+            for (auto f : forces) {
+                if (f && f->isAlive()) {
+                    const PxVec3 force = f->applyForce(*it);
+                    const PxVec3 accel = force / (*it)->getMass();  // F = ma
+                    (*it)->SetAcceleration((*it)->getAcceleration() + accel);
+                }
+            }
+
+            // Integrar la particula con la nueva aceleracion
             (*it)->Update(t, *this);
             it++;
         }
     }
 
+    // Eliminar partículas y generadores inactivos
     for (auto p : particlesToErase) {
-        auto it = find(particles.begin(), particles.end(), p);
+        auto it = std::find(particles.begin(), particles.end(), p);
         if (it != particles.end()) {
             particles.erase(it);
             delete p;
@@ -64,28 +71,41 @@ void ParticleSystem::Update(double t)
     }
 
     for (auto f : forcesToErase) {
-        auto it = find(forces.begin(), forces.end(), f);
+        auto it = std::find(forces.begin(), forces.end(), f);
         if (it != forces.end()) {
             forces.erase(it);
             delete f;
         }
     }
 
-    // Aplica las fuerzas bien
-    for (auto f : forces) {
-        if (f != nullptr && f->isAlive()) {
-            // Update de cada generador
-            f->update(t);
-
-            //Fuerza a cada particula
-            for (auto it = particles.begin(); it != particles.end(); ++it) {
-                if (*it != nullptr) {
-                    PxVec3 force = f->applyForce(*it);
-                    (*it)->ApplyForce(force);
-                }
-            }
+   /* for (auto g : gToErase) {
+        auto it = std::find(gList.begin(), gList.end(), g);
+        if (it != gList.end()) {
+            gList.erase(it);
+            delete g;
         }
-    }
+    }*/
+
+    // Para la explosión    y en applyforce particle poner +
+    //for (auto f : forces) {
+    //    if (f != nullptr && f->isAlive()) {
+    //        // Update de cada generador
+    //        f->update(t);
+    //        //Fuerza a cada particula
+    //        for (auto it = particles.begin(); it != particles.end(); ++it) {
+    //            if (*it != nullptr) {
+    //                PxVec3 force = f->applyForce(*it);
+    //                (*it)->ApplyForce(force);
+    //            }
+    //        }
+    //    }
+    //}
+    //for (auto it = particles.begin(); it != particles.end(); ) {
+    //    if (*it != nullptr) {
+    //        (*it)->Update(t, *this);
+    //        it++;
+    //    }
+    //}
 }
 
 
@@ -161,8 +181,8 @@ void ParticleSystem::Spring()
 {
     cout << "SPRING NORMAL" << endl;
     // First one standard spring uniting 2 particles
-    Particle* p1 = new Particle({ -20, 10, 0 }, { 0,0,0 }, { 0,0,0 }, 5, 60);
-    Particle* p2 = new Particle({ 20, 10, 0 }, { 0,0,0 }, { 0,0,0 }, 5, 60);
+    Particle* p1 = new Particle({ -10, 10, 0 }, { 0,0,0 }, { 0,0,0 }, 1, 60);
+    Particle* p2 = new Particle({ 10, 10, 0 }, { 0,0,0 }, { 0,0,0 }, 5, 60);
     SpringForceGenerator* f1 = new SpringForceGenerator(1, 10, p2);
     SpringForceGenerator* f2 = new SpringForceGenerator(1, 10, p1);
     forces.push_back(f2);
