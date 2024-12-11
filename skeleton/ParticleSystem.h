@@ -45,6 +45,7 @@ public:
 	// MUELLES
 	void Spring();
 	void Anchor();
+
 	//-----------------------------// 
 
 	list<Particle*> particles;

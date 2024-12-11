@@ -17,11 +17,13 @@ Particle* UniformGenerator::generate()
 
     PxVec3 randomVelocity(distX(myRandom), distY(myRandom), distZ(myRandom));
 
+    myParticle.setTransform(PxTransform(0, 0, 0));
     Particle* particle = new Particle(myParticle);
 
     particle->setVelocity(randomVelocity);
     particle->setPosition(calculatePosition());
     particle->setMass(10);
+    //particle->setPosition()
 
     return particle;
 }

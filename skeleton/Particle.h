@@ -27,6 +27,7 @@ public:
 	bool UpdateLifeTime(double t);
 
 
+	PxVec3 getAcceleration() { return acceleration; }
 	void SetAcceleration(PxVec3 dir) { acceleration = dir; }
 	void SetVelocity(PxVec3 vel) { velocity = vel; }
 
@@ -42,6 +43,9 @@ public:
 	void setIterator(list<Particle*>::iterator it) { myIt = it; }
 	list<Particle*>::iterator getIterator() const { return myIt; }
 
+	void setTransform(PxTransform tr) { transform = tr; }
+	PxTransform getTransform() { return transform; }
+
 	void setMass(double m) { mass = m; }
 	double getMass() { return mass; }
 
@@ -50,8 +54,6 @@ public:
 	bool OnRadius();
 
 	void ApplyForce(PxVec3 force) { acceleration = force / mass; }
-
-	PxTransform getTransform() { return transform; }
 
 	void setRenderItem(RenderItem * ri) { renderItem = ri; }
 
