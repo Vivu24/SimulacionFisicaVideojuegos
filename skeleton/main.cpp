@@ -91,16 +91,20 @@ void initPhysics(bool interactive)
 
     //particleSystem->Whirlwind(PxVec3(0.0f, 0.0f, 0.0f), PxVec3(15.0f, 100.0f, 15.0f), 0.5f, 500.0f);
 
-    //particleSystem->Explosion(1000.0f, 20.0f, 10.0f);  // Intensidad 100, radio 20, tau 1
+    //particleSystem->Explosion(100.0f, 20.0f, 1.0f);  // Intensidad 100, radio 20, tau 1
     // Explosion con a +=
 
-    //particleSystem->Spring();           // += en applyforce
+    //particleSystem->Spring();
 
     //particleSystem->Anchor();
 
     /*Particle* particle = new Particle({ 0, 0, 0 }, { 0,0,0 }, { 0,0,0 }, 1, 60);
     particleSystem->AddParticle(particle);*/
-    particleSystem->Buoyancy(1, 1, 1);
+
+
+    //SUELO
+    myFloor = new RenderItem(CreateShape(PxBoxGeometry(10, 1, 10)), new PxTransform(0, 50, 0), Vector4(0, 0.75, 1, 1));
+    particleSystem->Buoyancy(5, 2, 1000);
 
     #pragma region Muelle
     //// Crear la partícula dinámica

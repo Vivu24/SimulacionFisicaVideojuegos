@@ -40,26 +40,7 @@ void ParticleSystem::Update(double t)
         }
     }
 
-    // Actualizar todas las partículas
-    for (auto it = particles.begin(); it != particles.end(); ) {
-        if (*it != nullptr) {
-            // Reiniciar aceleración a cero
-            (*it)->SetAcceleration(PxVec3(0, 0, 0));
-
-            // Aplicar fuerzas (como gravedad) a la aceleracion
-            for (auto f : forces) {
-                if (f && f->isAlive()) {
-                    const PxVec3 force = f->applyForce(*it);
-                    const PxVec3 accel = force / (*it)->getMass();  // F = ma
-                    (*it)->SetAcceleration((*it)->getAcceleration() + accel);
-                }
-            }
-
-            // Integrar la particula con la nueva aceleracion
-            (*it)->Update(t, *this);
-            it++;
-        }
-    }
+    
 
     // Eliminar partículas y generadores inactivos
     for (auto p : particlesToErase) {
@@ -86,7 +67,28 @@ void ParticleSystem::Update(double t)
         }
     }*/
 
-    // Para la explosión    y en applyforce particle poner +
+    // Actualizar todas las partículas
+    for (auto it = particles.begin(); it != particles.end(); ) {
+        if (*it != nullptr) {
+            // Reiniciar aceleración a cero
+            (*it)->SetAcceleration(PxVec3(0, 0, 0));
+
+            // Aplicar fuerzas (como gravedad) a la aceleracion
+            for (auto f : forces) {
+                if (f && f->isAlive()) {
+                    const PxVec3 force = f->applyForce(*it);
+                    const PxVec3 accel = force / (*it)->getMass();  // F = ma
+                    (*it)->SetAcceleration((*it)->getAcceleration() + accel);
+                }
+            }
+
+            // Integrar la particula con la nueva aceleracion
+            (*it)->Update(t, *this);
+            it++;
+        }
+    }
+
+    //Para la explosión    y en applyforce particle poner +
     //for (auto f : forces) {
     //    if (f != nullptr && f->isAlive()) {
     //        // Update de cada generador
@@ -196,27 +198,34 @@ void ParticleSystem::Anchor()
     cout << "ANCHOR" << endl;
     // First one standard spring uniting 2 particles
     AnchoredSpringFG* anchor = new AnchoredSpringFG(0.5, 10, {-10, 10, 0});
-    Particle* particle = new Particle({ 10, 10, 0 }, { 0,0,0 }, { 0,0,0 }, 1, 60);
+    Particle* particle = new Particle({ 10, 10, 0 }, { 0,0,0 }, { 0,0,0 }, 0.5, 60);
+
+    //Particle* particle2 = new Particle({ 10, 10, 0 }, { 0,0,0 }, { 0,0,0 }, 1, 60);
+
     
     forces.push_back(anchor);
     //SpringForceGenerator* f2 = new SpringForceGenerator(0.1, 10, anchor);
     //forces.push_back(f2);
     //particles.push_back(anchor);
     particles.push_back(particle);
+    //particles.push_back(particle2);
+
+
 }
 
 void ParticleSystem::Buoyancy(float h, float V, float d)
 {
-    Particle* particle = new Particle({ 0, 30, 0 }, { 0,0,0 }, { 0,0,0 }, 1, 60);
-    Particle* water = new Particle({ 0, 50, 0 }, { 0,0,0 }, { 0,0,0 }, 1000, 60);
+    Particle* particle = new Particle({ 0, 30, 0 }, { 0,0,0 }, { 0,0,0 }, 1500, 60);
+    Particle* water = new Particle({ 0, 50, 0 }, { 0,0,0 }, { 0,0,0 }, 0, 60);
 
     particles.push_back(particle);
-    particles.push_back(water);
 
     BuoyancyForceGenerator* buoyancy = new BuoyancyForceGenerator(h, V, d);
     buoyancy->setLiquidParticle(water);
     forces.push_back(buoyancy);
 
+    GravityGenerator* g = new GravityGenerator(10);
+    forces.push_back(g);
 }
 
 
