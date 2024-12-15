@@ -16,10 +16,12 @@ PxVec3 SpringForceGenerator::applyForce(Particle* particle)
 
 	// normalize: Normalize the relative_pos_vector and returns its length
 	const float lenght = relative_pos_vector.normalize();
+
 	const float delta_x = lenght - _resting_length;
 
 	force = relative_pos_vector * delta_x * _k;
 
+	//particle->ApplyForce(force);
 	return force;
 }
 

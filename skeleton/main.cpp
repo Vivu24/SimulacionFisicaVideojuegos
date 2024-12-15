@@ -43,7 +43,7 @@ vector<Particle*> particles;
 
 PxTransform pruebaTR;
 
-Particle* anchor = nullptr;              // Partícula fija (anclaje del muelle)
+Particle* anchor = nullptr;              // Partï¿½cula fija (anclaje del muelle)
 Particle* dynamicParticle = nullptr;
 SpringForceGenerator* spring = nullptr;
 
@@ -79,13 +79,13 @@ void initPhysics(bool interactive)
     //myFloor = new RenderItem(CreateShape(PxBoxGeometry( 100, 1, 100 )), new PxTransform(0, 0, 0), Vector4(0.5, 0.5, 0.25, 1));
 
 
-    // Sistema de Partículas
-    particleSystem = new ParticleSystem();
+    // Sistema de Partï¿½culas
+    //particleSystem = new ParticleSystem();
     //particleSystem->CreateUniformGenerator(PxVec3(0, 0, 0), PxVec3(0, 20, 0), 20, 10.0f, 5.0f, spawnDistribution::UNIFORM, 50.0f, 10);
     
-    // Práctica 3
+    // Prï¿½ctica 3
     
-    //particleSystem->Gravity(5);
+    //particleSystem->Gravity(100);
 
     //particleSystem->Wind(PxVec3(0, 0, 0), PxVec3(10, 10, 10), PxVec3(20, 0, 0), 20);
 
@@ -107,26 +107,26 @@ void initPhysics(bool interactive)
     particleSystem->Buoyancy(5, 2, 1000);
 
     #pragma region Muelle
-    //// Crear la partícula dinámica
+    //// Crear la partï¿½cula dinï¿½mica
     //Particle particula;
     //dynamicParticle = new Particle(particula);
 
-    //// Crear la partícula ancla (fija)
+    //// Crear la partï¿½cula ancla (fija)
     //Particle anchorParticula;  // Usamos el constructor predeterminado
-    //anchor = new Particle(anchorParticula);  // La partícula ancla
+    //anchor = new Particle(anchorParticula);  // La partï¿½cula ancla
 
-    //// Añadir las partículas al sistema
+    //// Aï¿½adir las partï¿½culas al sistema
     //particleSystem->AddParticle(dynamicParticle);
-    //particleSystem->AddParticle(anchor);  // Añadir también el ancla
+    //particleSystem->AddParticle(anchor);  // Aï¿½adir tambiï¿½n el ancla
 
-    //// Crear el muelle entre la partícula ancla y la partícula dinámica
+    //// Crear el muelle entre la partï¿½cula ancla y la partï¿½cula dinï¿½mica
     //spring = new SpringForceGenerator(
-    //    10.0f,  // Constante elástica
+    //    10.0f,  // Constante elï¿½stica
     //    5.0f,   // Longitud en reposo
-    //    anchor  // Partícula fija (ancla)
+    //    anchor  // Partï¿½cula fija (ancla)
     //);
 
-    //// Añadir el generador de fuerza del muelle al sistema de partículas
+    //// Aï¿½adir el generador de fuerza del muelle al sistema de partï¿½culas
     //particleSystem->forces.push_back(spring);
     #pragma endregion
 
@@ -219,9 +219,9 @@ void keyPress(unsigned char key, const PxTransform& camera)
     switch (toupper(key))
     {
     case ' ': {
-        // Crear una nueva partícula con el ESPACIO
+        // Crear una nueva partï¿½cula con el ESPACIO
         Particle* particle = new Particle(GetCamera()->getTransform().p, 10 * GetCamera()->getDir(), PxVec3(0, 0, 0), 1.0, 5.0);
-        particle->SetAcceleration(PxVec3(0, -2.5, 0)); // Aceleración debido a la gravedad
+        particle->SetAcceleration(PxVec3(0, -2.5, 0)); // Aceleraciï¿½n debido a la gravedad
         particles.push_back(particle);
         break;
     }

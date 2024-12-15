@@ -23,8 +23,7 @@ Particle* UniformGenerator::generate()
     particle->setVelocity(randomVelocity);
     particle->setPosition(calculatePosition());
     particle->setMass(10);
-    //particle->setPosition();
-
+    //particle->setPosition()
 
     return particle;
 }
