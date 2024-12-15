@@ -81,22 +81,31 @@ void initPhysics(bool interactive)
 
     // Sistema de Partículas
     particleSystem = new ParticleSystem();
-    particleSystem->CreateUniformGenerator(PxVec3(0, 0, 0), PxVec3(0, 20, 0), 20, 10.0f, 5.0f, spawnDistribution::UNIFORM, 50.0f, 10);
+    //particleSystem->CreateUniformGenerator(PxVec3(0, 0, 0), PxVec3(0, 20, 0), 20, 10.0f, 5.0f, spawnDistribution::UNIFORM, 50.0f, 10);
     
     // Práctica 3
     
-    //particleSystem->Gravity(300);
+    //particleSystem->Gravity(5);
 
     //particleSystem->Wind(PxVec3(0, 0, 0), PxVec3(10, 10, 10), PxVec3(20, 0, 0), 20);
 
     //particleSystem->Whirlwind(PxVec3(0.0f, 0.0f, 0.0f), PxVec3(15.0f, 100.0f, 15.0f), 0.5f, 500.0f);
 
-    //particleSystem->Explosion(1000.0f, 20.0f, 10.0f);  // Intensidad 100, radio 20, tau 1
+    //particleSystem->Explosion(100.0f, 20.0f, 1.0f);  // Intensidad 100, radio 20, tau 1
     // Explosion con a +=
 
-    //particleSystem->Spring();           // += en applyforce
+    //particleSystem->Spring();
 
     //particleSystem->Anchor();
+
+    /*Particle* particle = new Particle({ 0, 0, 0 }, { 0,0,0 }, { 0,0,0 }, 1, 60);
+    particleSystem->AddParticle(particle);*/
+
+
+    //SUELO
+    myFloor = new RenderItem(CreateShape(PxBoxGeometry(10, 1, 10)), new PxTransform(0, 50, 0), Vector4(0, 0.75, 1, 1));
+    particleSystem->Buoyancy(5, 2, 1000);
+
     #pragma region Muelle
     //// Crear la partícula dinámica
     //Particle particula;
@@ -162,7 +171,7 @@ void stepPhysics(bool interactive, double t)
     gScene->simulate(t);
     gScene->fetchResults(true);
     
-    particleSystem->Update(t);
+    //particleSystem->Update(t);
 }
 
 
