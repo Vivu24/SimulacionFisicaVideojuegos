@@ -14,6 +14,7 @@
 #include "ExplosionGenerator.h"
 #include "SpringForceGenerator.h"
 #include "AnchoredSpringFG.h"
+#include "BuoyancyForceGenerator.h"
 
 using namespace physx;
 using namespace std;
@@ -46,6 +47,7 @@ public:
 	void Spring();
 	void Anchor();
 
+	void Buoyancy(float h, float V, float d);
 	//-----------------------------// 
 
 	list<Particle*> particles;
