@@ -15,6 +15,7 @@ public:
 
     void initCam();
     void createHole1();
+    void createHole2();
 
     void setDefaultMaterial(PxMaterial* material) { defaultMaterial = material; }
 
@@ -36,9 +37,27 @@ private:
     double confettiTimer = 0.0; // Temporizador para las partículas de confeti
     bool confettiActive = false; // Si las partículas están activas
 
-    // Posiciones de los hoyos y de la bola
-    PxVec3 hole1Position = { -40.0f, 0.05f, 0.0f };
-    PxVec3 spawnPosition = { 0.0f, 0.5f, 0.0f };
-    bool hoyoAlcanzado = false; // Flag para cuando la bola alcanza el hoyo
+    float bordilloAlto = 1.3f;
+    float bordilloAncho = 1.0f;
+    PxVec4 bordilloColor = { 0.8, 0.8, 0.8, 1.0 };
 
+    bool transitionActive = false;   // Indica si estamos en transición
+    double transitionTimer = 0.0;    // Tiempo acumulado durante la transición
+    PxVec3 nextSpawnPosition;        // Posición a la que se moverá la bola
+
+
+    vector<PxVec3> holesPositions{
+        { -40.0f, 0.05f, 0.0f },    // HOYO 1
+        { -150.0f, 0.05f, 50.0f }    // HOYO 2
+    };
+
+    vector<PxVec3> spawnPositions{
+        { 0.0f, 0.05f, 0.0f },       // HOYO 1
+        { -60.0f, 0.05f, 0.0f }      // HOYO 2
+    };
+
+    vector<bool> holesCompleteds{
+        false,                      // HOYO 1
+        false                       // HOYO 2
+    };
 };
