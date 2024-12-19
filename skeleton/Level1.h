@@ -51,16 +51,15 @@ private:
     
     float DeadHeight = -30.0f;
     PxTransform lastCheckPointPos;
-    RenderItem* myFloor = nullptr;  // Variable global para almacenar el plano
+    RenderItem* myFloor = nullptr;
 
-    // Cooldown para la tecla de disparo
+    // Cooldown para la tecla de movimiento
     double accumulatedTime = 0.0;
     const double cooldown = 1.0;
 
     // Bolas Rojas
-    float obstacleTimer = 0.0f; // Temporizador para crear bolas
-    const float obstacleInterval = 2.0f; // Intervalo de 2 segundos para crear bolas
-    const float hole3Radius = 5.0f; // Radio dentro del cual se crearán las bolas (ajustar según sea necesario)
+    float obstacleTimer = 0.0f;
+    const float obstacleInterval = 2.0f;
 
     // Bordillos
     float bordilloAlto = 1.0f;

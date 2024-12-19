@@ -78,8 +78,6 @@ void Level1::update(double t) {
 
     // Verifica si el temporizador ha alcanzado el intervalo
     if (obstacleTimer >= obstacleInterval) {
-        // Crear bola roja en una posición fija (en el hoyo 3)
-        cout << "BOLAROJA" << endl;
 
         // Restablecer el temporizador
         obstacleTimer = 0.0f;
@@ -92,9 +90,6 @@ void Level1::update(double t) {
         windParticleSystem->AddRigidBody(obstacle1);
         windParticleSystem->AddRigidBody(obstacle2);
         windParticleSystem->AddRigidBody(obstacle3);
-
-        // Crear bola roja en una posición fija (en el hoyo 3)
-        cout << "BOLAVERDE" << endl;
 
         // Crear la bola roja como obstáculo
         RigidBody* obstacleV0 = new RigidBody(gPhysics, gScene, auxSpawn1BV, 5.0f, 5.5f, PxVec4(0.0f, 1.0f, 0.0f, 1.0f), 5); // Bola roja
@@ -144,7 +139,6 @@ void Level1::update(double t) {
         // Comprobar si la bola ha llegado al hoyo
         float distanciaAlHoyo = (ballPosition - holesPositions[i]).magnitude();
         if (distanciaAlHoyo < 1.1f && !holesCompleteds[i]) {
-            cout << "¡La bola ha llegado al hoyo!" << endl;
             holesCompleteds[i] = true;
 
             // Activa el confeti
@@ -177,8 +171,6 @@ void Level1::keyPressed(unsigned char key, const PxTransform& camera)
         // Reiniciar el tiempo acumulado después de la acción
         accumulatedTime = 0.0;
 
-        cout << "ESPACIO" << endl;
-
         // Verificar si la bola de golf existe
         if (!golfBall) return;
 
@@ -194,7 +186,6 @@ void Level1::keyPressed(unsigned char key, const PxTransform& camera)
         break;
     }
     case 'Z': {
-        cout << "Z" << endl;
         if (!lookBall) {
             lookBall = true;
         }

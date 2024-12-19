@@ -133,7 +133,9 @@ PxVec3 RigidBody::calculateTensor(float m)
         float y = 2 * cubo.halfExtents.y;
         float z = 2 * cubo.halfExtents.z;
 
-        return PxVec3((1.0f / 12.0f) * m * (y * y + z * z), (1.0f / 12.0f) * m * (x * x + z * z), (1.0f / 12.0f) * m * (x * x + y * y));
+        return PxVec3((1.0f / 12.0f) * (y * y + z * z) * m,
+            (1.0f / 12.0f)  * (x * x + z * z) * m,
+            (1.0f / 12.0f)  * (x * x + y * y) * m);
     }
     else if (tipo == PxGeometryType::eSPHERE)
     {
