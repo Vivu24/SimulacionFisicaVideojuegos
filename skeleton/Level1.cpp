@@ -189,21 +189,21 @@ void Level1::initCam()
         throw std::runtime_error("Cam not Init");
     }
 
-    // Posición inicial de la bola
+    // No me acordaba de esto
+    // Creo que lo cambie un poco, pero paso de cargarme todo q no tengo tiempo :)
+
     PxVec3 ballPosition = { 0, 0.5f, 0 };
 
-    // Offset de la cámara en relación a la bola
-    PxVec3 cameraOffset = { 0, 20.0f, 0.0f }; // La cámara está detrás y por encima de la bola
+    PxVec3 cameraOffset = { 0, 20.0f, 0.0f };
 
     // Calcula la posición inicial de la cámara
     PxVec3 initialCameraPos = ballPosition + cameraOffset;
 
-    // Obtén la cámara
     Snippets::Camera* camera = GetCamera();
 
     // Ajusta la posición y dirección de la cámara
-    camera->mEye = initialCameraPos;                // Posición inicial de la cámara
-    camera->mDir = (ballPosition - initialCameraPos).getNormalized(); // Apunta hacia la bola
+    camera->mEye = initialCameraPos;
+    camera->mDir = (ballPosition - initialCameraPos).getNormalized();
 }
 
 void Level1::createTrackSegment(const PxVec3& position, const PxQuat& rotation, const PxVec3& size) {

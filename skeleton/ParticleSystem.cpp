@@ -267,10 +267,6 @@ void ParticleSystem::NewAnchor(PxPhysics* gPhysics, PxScene* gScene,
 
     // Añadir el RigidBody al vector de cuerpos rígidos
     rigidBodies.push_back(rigidBody);
-
-    // Información de depuración
-    cout << "Spring created with anchor at: " << anchorPosition.x << ", " << anchorPosition.y << ", " << anchorPosition.z << endl;
-    cout << "RigidBody created at: " << rigidBodyPosition.x << ", " << rigidBodyPosition.y << ", " << rigidBodyPosition.z << endl;
 }
 
 
