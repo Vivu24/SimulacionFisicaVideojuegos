@@ -3,8 +3,8 @@
 UniformGenerator::UniformGenerator(Particle* p, float rate, float range, float spawnRange, spawnDistribution sp) :
     ParticleGenerator(p, rate, spawnRange, sp)
 {
-    PxVec3 vel = p->getVelocity();
-    PxVec3 dev = PxVec3(range, range, range);
+    PxVec3 vel = p->getVelocity();    // Velocidad de la partícula base
+    PxVec3 dev = PxVec3(range, range, range);  // Rango de dispersión de velocidad
     minVelocity = vel - dev;
     maxVelocity = vel + dev;
 }
@@ -17,7 +17,7 @@ Particle* UniformGenerator::generate()
 
     PxVec3 randomVelocity(distX(myRandom), distY(myRandom), distZ(myRandom));
 
-    //myParticle.setTransform(PxTransform(0, 0, 0));
+    //myParticle.setTransform(0, 0, 0));
     Particle* particle = new Particle(myParticle);
 
     particle->setVelocity(randomVelocity);

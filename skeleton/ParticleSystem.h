@@ -50,6 +50,10 @@ public:
 	// MUELLES
 	void Spring();
 	void Anchor();
+	void NewAnchor(PxPhysics* gPhysics, PxScene* gScene,
+		const PxVec3& anchorPosition, const PxVec3& rigidBodyPosition,
+		const PxVec3& dimensions, float mass,
+		float springConstant, float restLength, Vector4 color);
 
 	void Buoyancy(float h, float V, float d);
 	//-----------------------------// 

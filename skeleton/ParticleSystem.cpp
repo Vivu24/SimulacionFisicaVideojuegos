@@ -29,8 +29,8 @@ ParticleSystem::~ParticleSystem()
 
 void ParticleSystem::Update(double t)
 {
-    particlesToErase.clear();
-    forcesToErase.clear();
+    //particlesToErase.clear();
+    //forcesToErase.clear();
     //gToErase.clear();
 
     rigidBodiesToErase.clear();
@@ -247,6 +247,33 @@ void ParticleSystem::Anchor()
 
 
 }
+
+void ParticleSystem::NewAnchor(PxPhysics* gPhysics, PxScene* gScene,
+    const PxVec3& anchorPosition, const PxVec3& rigidBodyPosition,
+    const PxVec3& dimensions, float mass,
+    float springConstant, float restLength, Vector4 color)
+{
+    // Crear el resorte anclado
+    AnchoredSpringFG* anchor = new AnchoredSpringFG(springConstant, restLength, anchorPosition);
+
+    // Crear el RigidBody móvil
+    RigidBody* rigidBody = new RigidBody(gPhysics, gScene, rigidBodyPosition, PxVec3(0, 0, 0), PxVec3(0, 0, 0),
+        dimensions, mass, color, 0.0f);
+    rigidBody->getActor()->setLinearDamping(0.0f);
+    rigidBody->getActor()->setAngularDamping(0.0f);
+
+    // Añadir el resorte al vector de fuerzas
+    forces.push_back(anchor);
+
+    // Añadir el RigidBody al vector de cuerpos rígidos
+    rigidBodies.push_back(rigidBody);
+
+    // Información de depuración
+    cout << "Spring created with anchor at: " << anchorPosition.x << ", " << anchorPosition.y << ", " << anchorPosition.z << endl;
+    cout << "RigidBody created at: " << rigidBodyPosition.x << ", " << rigidBodyPosition.y << ", " << rigidBodyPosition.z << endl;
+}
+
+
 
 void ParticleSystem::Buoyancy(float h, float V, float d)
 {

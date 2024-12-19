@@ -50,6 +50,45 @@ RigidBody::RigidBody(PxPhysics* gPhysics, PxScene* gScene, const PxVec3& positio
     renderItem = new RenderItem(shape, actor, color);
 }
 
+RigidBody::RigidBody(PxPhysics* gPhysics, PxScene* gScene, const PxVec3& position, float radius, double masa, Vector4 color, double t)
+{
+    lifeTime = t;
+
+    // Crear el actor dinámico en la posición proporcionada
+    actor = gPhysics->createRigidDynamic(PxTransform(position));
+
+    // Bloquear todas las rotaciones
+    actor->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, true);
+    actor->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, true);
+    actor->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, true);
+
+    actor->setLinearVelocity(PxVec3(0,0,0));
+    actor->setAngularVelocity(PxVec3(0, 0, 0));
+
+    // Material para la esfera
+    PxMaterial* material = gPhysics->createMaterial(0.5f, 0.5f, 0.0f);
+
+    // Crear la forma de la esfera
+    PxSphereGeometry sphereGeom(radius);  // Convertimos a float ya que PxSphereGeometry usa floats
+    shape = CreateShape(sphereGeom, material);
+
+    // Asociar la forma al actor
+    actor->attachShape(*shape);
+
+    // Calcular la inercia y la masa
+    PxRigidBodyExt::updateMassAndInertia(*actor, 0.15f);
+    PxVec3 aux = calculateTensor(masa);
+    actor->setMassSpaceInertiaTensor(aux);
+    actor->setMass(masa);
+
+    // Agregar el actor a la escena
+    gScene->addActor(*actor);
+
+    // Crear el item de renderizado
+    renderItem = new RenderItem(shape, actor, color);
+}
+
+
 RigidBody::~RigidBody()
 {
     DeregisterRenderItem(renderItem);

@@ -15,6 +15,9 @@ public:
     // Constructor
     RigidBody(PxPhysics* gPhysics, PxScene* gScene, const PxVec3& position, const PxVec3& linearVelocity,
         const PxVec3& angularVelocity, const PxVec3& dimensions, double masa, Vector4 color, double t);
+
+    RigidBody(PxPhysics* gPhysics, PxScene* gScene, const PxVec3& position, 
+        float radius, double masa, Vector4 color, double t);
     // Destructor
     ~RigidBody();
 

@@ -23,4 +23,19 @@ PxVec3 SpringForceGenerator::applyForce(Particle* particle)
 	return force;
 }
 
+PxVec3 SpringForceGenerator::applyForce(RigidBody* p)
+{
+	//Particle is the particle to apply the force
+		PxVec3 relative_pos_vector = _other->getPosition() - p->getActor()->getGlobalPose().p;
+	PxVec3 force;
+
+	// normalize: Normalize the relative_pos_vector and returns its length
+	const float lenght = relative_pos_vector.normalize();
+	const float delta_x = lenght - _resting_length;
+
+	force = relative_pos_vector * delta_x * _k;
+
+	return force;
+}
+
 

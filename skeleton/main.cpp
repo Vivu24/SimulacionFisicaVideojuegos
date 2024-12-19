@@ -16,7 +16,7 @@
 #include "Level1.h"
 #include "Level2.h"
 
-std::string display_text = "This is a test";
+std::string display_text = "SPACE --> Move / MOUSE --> Camera";
 
 using namespace physx;
 
