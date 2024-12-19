@@ -157,9 +157,7 @@ void Level1::update(double t) {
             lastCheckPointPos.p = nextSpawnPosition;
             return; // Detenemos el resto de la lógica en este frame
         }
-    }
-
-    
+    }    
 }
 
 

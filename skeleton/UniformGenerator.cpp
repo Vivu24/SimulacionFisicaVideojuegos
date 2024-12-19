@@ -11,20 +11,25 @@ UniformGenerator::UniformGenerator(Particle* p, float rate, float range, float s
 
 Particle* UniformGenerator::generate()
 {
+    // Generar velocidades aleatorias dentro del rango
     uniform_real_distribution<float> distX(minVelocity.x, maxVelocity.x);
     uniform_real_distribution<float> distY(minVelocity.y, maxVelocity.y);
     uniform_real_distribution<float> distZ(minVelocity.z, maxVelocity.z);
 
     PxVec3 randomVelocity(distX(myRandom), distY(myRandom), distZ(myRandom));
 
-    //myParticle.setTransform(0, 0, 0));
+    // Crear la partícula y establecer sus propiedades
     Particle* particle = new Particle(myParticle);
 
+    // Establecer la velocidad y la posición
     particle->setVelocity(randomVelocity);
     particle->setPosition(calculatePosition());
-    particle->setMass(10);
-    //particle->setPosition();
 
+    // Establecer la masa aleatoria dentro del rango (±3 unidades de la masa de referencia)
+    float baseMass = 10.0f;  // Masa de referencia
+    uniform_real_distribution<float> distMass(baseMass - 3.0f, baseMass + 3.0f); // Rango de masa de ±3 unidades
+    float randomMass = distMass(myRandom);  // Generar la masa aleatoria dentro del rango
+    particle->setMass(randomMass);  // Establecer la masa aleatoria de la partícula
 
     return particle;
 }
