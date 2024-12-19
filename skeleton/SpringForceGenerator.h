@@ -12,6 +12,7 @@ public:
 	SpringForceGenerator(double k, double resting_length, Particle* other);
 
 	PxVec3 applyForce(Particle* p) override;
+	PxVec3 applyForce(RigidBody* p) override { return PxVec3(0, 0, 0); };
 
 	inline void setK(double k) { _k = k; }
 

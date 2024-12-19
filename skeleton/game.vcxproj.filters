@@ -24,6 +24,10 @@
     <ClCompile Include="SpringForceGenerator.cpp" />
     <ClCompile Include="AnchorParticle.cpp" />
     <ClCompile Include="BuoyancyForceGenerator.cpp" />
+    <ClCompile Include="RigidBody.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Level1.cpp" />
+    <ClCompile Include="Level2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -49,6 +53,10 @@
     <ClInclude Include="SpringForceGenerator.h" />
     <ClInclude Include="AnchorParticle.h" />
     <ClInclude Include="BuoyancyForceGenerator.h" />
+    <ClInclude Include="RigidBody.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="Level1.h" />
+    <ClInclude Include="Level2.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

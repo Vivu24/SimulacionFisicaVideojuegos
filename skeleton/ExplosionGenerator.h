@@ -10,6 +10,7 @@ public:
 
     void update(double t) override;
     PxVec3 applyForce(Particle* p) override { return PxVec3(0, 0, 0); };        // A (0,0,0) para que no pete
+    PxVec3 applyForce(RigidBody* p) override { return PxVec3(0, 0, 0); };
 
     //void explosion() { exploding = true; }  
 

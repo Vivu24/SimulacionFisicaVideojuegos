@@ -15,6 +15,8 @@
 #include "SpringForceGenerator.h"
 #include "AnchoredSpringFG.h"
 #include "BuoyancyForceGenerator.h"
+#include "RigidBody.h"
+
 
 using namespace physx;
 using namespace std;
@@ -29,7 +31,9 @@ public:
 	void Update(double t);
 
 	void EliminateParticle(Particle* particle);
+	void EliminateRigidBody(RigidBody* rigidBody);
 	void AddParticle(Particle* p);
+	void AddRigidBody(RigidBody* s);
 
 	void CreateUniformGenerator(PxVec3 pos, PxVec3 direction, float rate, float range, float sr, spawnDistribution sd, float rat, float lifetime = 15.0f);
 	void CreateNormalGenerator(PxVec3 pos, PxVec3 direction, float rate, PxVec3 des, float sr, spawnDistribution sd, float rat, float lifetime = 15.0f);
@@ -56,4 +60,8 @@ public:
 
 	list<ForceGenerator*> forces;
 	vector<ForceGenerator*> forcesToErase;
+
+
+	list<RigidBody*> rigidBodies;
+	vector<RigidBody*> rigidBodiesToErase;
 };

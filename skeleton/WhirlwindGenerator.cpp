@@ -27,3 +27,18 @@ PxVec3 WhirlwindGenerator::applyForce(Particle* p)
     }
     else return PxVec3(0, 0, 0);    // Fuera no hay fuerza
 }
+
+PxVec3 WhirlwindGenerator::applyForce(RigidBody* rb) {
+    if (!rb || !rb->getActor()) return PxVec3(0, 0, 0);
+
+    if (!isInside(rb->getActor()->getGlobalPose().p)) {
+        return PxVec3(0, 0, 0);
+    }
+
+    calculateVelocity(rb->getActor()->getGlobalPose().p);
+    PxVec3 relativeVelocity = windVelocity - rb->getActor()->getLinearVelocity();
+    PxVec3 force = rozCoef * relativeVelocity;
+
+    return force;
+}
+

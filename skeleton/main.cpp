@@ -12,6 +12,10 @@
 #include "ParticleSystem.h"
 #include <iostream>
 
+
+#include "Level1.h"
+#include "Level2.h"
+
 std::string display_text = "This is a test";
 
 using namespace physx;
@@ -50,6 +54,11 @@ SpringForceGenerator* spring = nullptr;
 RenderItem* anchorRenderItem = NULL;
 RenderItem* dynamicRenderItem = NULL;
 
+Level1* level1 = nullptr;
+Level2* level2 = nullptr;
+
+bool lv1Completed = false;
+
 // Initialize physics engine
 void initPhysics(bool interactive)
 {    
@@ -73,6 +82,9 @@ void initPhysics(bool interactive)
     sceneDesc.simulationEventCallback = &gContactReportCallback;
     gScene = gPhysics->createScene(sceneDesc);
 
+    #pragma region Principio
+
+
     //sphere1RI = new RenderItem(CreateShape(PxSphereGeometry(10)), new PxTransform(0, 35, 0), Vector4(1, 0.5, 1, 1));
     //sphere2RI = new RenderItem(CreateShape(PxSphereGeometry(5)), new PxTransform(20, 20, 0), Vector4(0.5, 0.5, 0.25, 1));
     
@@ -80,7 +92,7 @@ void initPhysics(bool interactive)
 
 
     // Sistema de Partículas
-    particleSystem = new ParticleSystem();
+    //particleSystem = new ParticleSystem();
     //particleSystem->CreateUniformGenerator(PxVec3(0, 0, 0), PxVec3(0, 20, 0), 20, 10.0f, 5.0f, spawnDistribution::UNIFORM, 50.0f, 10);
     
     // Práctica 3
@@ -103,10 +115,12 @@ void initPhysics(bool interactive)
 
 
     //SUELO
-    myFloor = new RenderItem(CreateShape(PxBoxGeometry(10, 1, 10)), new PxTransform(0, 50, 0), Vector4(0, 0.75, 1, 1));
-    particleSystem->Buoyancy(5, 2, 1000);
+    /*myFloor = new RenderItem(CreateShape(PxBoxGeometry(10, 1, 10)), new PxTransform(0, 50, 0), Vector4(0, 0.75, 1, 1));
+    particleSystem->Buoyancy(5, 2, 1000);*/
 
+#pragma endregion
     #pragma region Muelle
+
     //// Crear la partícula dinámica
     //Particle particula;
     //dynamicParticle = new Particle(particula);
@@ -128,10 +142,36 @@ void initPhysics(bool interactive)
 
     //// Añadir el generador de fuerza del muelle al sistema de partículas
     //particleSystem->forces.push_back(spring);
+
+
+    // RIGIDBODY
+    //RigidBody* r = new RigidBody(gPhysics, gScene);
+
+    //particleSystem->Gravity(-20);
+    ///particleSystem->Wind(PxVec3(0, 0, 0), PxVec3(10, 10, 10), PxVec3(5, 0, 0), 20);
+    //particleSystem->Whirlwind(PxVec3(0.0f, 0.0f, 0.0f), PxVec3(15.0f, 100.0f, 15.0f), 0.0f, 500.0f);
+
+    //particleSystem->AddRigidBody(r);
+
+
+    // PROYECTO
+    
+    
     #pragma endregion
 
+    level1 = new Level1(gPhysics, gScene);
+    level1->setDefaultMaterial(gMaterial);
+    level1->initScene();
+
+    
 }
 
+
+void createLv2() {
+    level2 = new Level2(gPhysics, gScene);
+    level2->setDefaultMaterial(gMaterial);
+    level2->initScene();
+}
 /*void checkParticlesHigh() {
     for each (Particle * particle in particles)
     {
@@ -147,8 +187,8 @@ void initPhysics(bool interactive)
 // t: time passed since last call in milliseconds
 void stepPhysics(bool interactive, double t)
 {
-    particleSystem->Update(t);
-
+    //particleSystem->Update(t);
+    level1->update(t);
     //Actualizar RenderItems    (NO FUNCA)
     //for (Particle* particle : particleSystem->particles) {
     //    if (particle->getRenderItem() != nullptr) {
@@ -183,18 +223,18 @@ void cleanupPhysics(bool interactive)
 
 
     // MIO
-    for (Particle* p : particles) {
-        delete p;
-    }
-    particles.clear();  // Limpiar vector
+    //for (Particle* p : particles) {
+    //    delete p;
+    //}
+    //particles.clear();  // Limpiar vector
 
-    for (ForceGenerator* f : particleSystem->forces) {
-        delete f;
-    }
-    particleSystem->forces.clear();
+    //for (ForceGenerator* f : particleSystem->forces) {
+    //    delete f;
+    //}
+    //particleSystem->forces.clear();
 
-    delete particleSystem;
-    particleSystem = nullptr;
+    /*delete particleSystem;
+    particleSystem = nullptr;*/
 
     // Rigid Body ++++++++++++++++++++++++++++++++++++++++++
     gScene->release();
@@ -214,22 +254,23 @@ void cleanupPhysics(bool interactive)
 // Function called when a key is pressed
 void keyPress(unsigned char key, const PxTransform& camera)
 {
+    level1->keyPressed(key, camera);
     PX_UNUSED(camera);
 
     switch (toupper(key))
     {
     case ' ': {
         // Crear una nueva partícula con el ESPACIO
-        Particle* particle = new Particle(GetCamera()->getTransform().p, 10 * GetCamera()->getDir(), PxVec3(0, 0, 0), 1.0, 5.0);
-        particle->SetAcceleration(PxVec3(0, -2.5, 0)); // Aceleración debido a la gravedad
-        particles.push_back(particle);
-        break;
+        //Particle* particle = new Particle(GetCamera()->getTransform().p, 10 * GetCamera()->getDir(), PxVec3(0, 0, 0), 1.0, 5.0);
+        //particle->SetAcceleration(PxVec3(0, -2.5, 0)); // Aceleración debido a la gravedad
+        //particles.push_back(particle);
+        //break;
     }
     case 'E': {
-        cout << "PULSADO E" << endl;
+        /*cout << "PULSADO E" << endl;
         PxVec3 position(0, 10, 0);
         particleSystem->TriggerExplosion(position);
-        break;
+        break;*/
     }
 
     default:

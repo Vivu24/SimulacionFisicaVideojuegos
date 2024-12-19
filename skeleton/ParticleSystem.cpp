@@ -33,6 +33,8 @@ void ParticleSystem::Update(double t)
     forcesToErase.clear();
     //gToErase.clear();
 
+    rigidBodiesToErase.clear();
+
     // Actualizar todos los generadores
     for (auto g : generators) {
         if (g != nullptr) {
@@ -67,6 +69,14 @@ void ParticleSystem::Update(double t)
         }
     }*/
 
+    for (auto r : rigidBodiesToErase) {
+        auto it = std::find(rigidBodies.begin(), rigidBodies.end(), r);
+        if (it != rigidBodies.end()) {
+            rigidBodies.erase(it);
+            delete r;
+        }
+    }
+
     // Actualizar todas las partículas
     for (auto it = particles.begin(); it != particles.end(); ) {
         if (*it != nullptr) {
@@ -85,6 +95,19 @@ void ParticleSystem::Update(double t)
             // Integrar la particula con la nueva aceleracion
             (*it)->Update(t, *this);
             it++;
+        }
+    }
+
+    for (RigidBody* r : rigidBodies) {
+        if (r != nullptr) {
+            r->getActor()->clearForce(PxForceMode::eFORCE);
+
+            for (auto f : forces) {
+                if (f && f->isAlive()) {
+                    PxVec3 force = f->applyForce(r);
+                    r->getActor()->addForce(force);
+                }
+            }
         }
     }
 
@@ -116,9 +139,21 @@ void ParticleSystem::EliminateParticle(Particle* p) {
 		particlesToErase.push_back(p);
 }
 
+void ParticleSystem::EliminateRigidBody(RigidBody* rigidBody)
+{
+    if (rigidBody != nullptr && rigidBody->getIterator() != rigidBodies.end())
+        rigidBodiesToErase.push_back(rigidBody);
+}
+
 void ParticleSystem::AddParticle(Particle* p) {
 	particles.push_back(p);
 	p->setIterator(--particles.end());
+}
+
+void ParticleSystem::AddRigidBody(RigidBody* s)
+{
+    rigidBodies.push_back(s);
+    s->setIterator(--rigidBodies.end());
 }
 
 void ParticleSystem::CreateUniformGenerator(PxVec3 pos, PxVec3 direction, float rate, float range, float sr, spawnDistribution sd, float rat, float lifetime)

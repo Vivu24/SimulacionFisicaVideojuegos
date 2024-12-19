@@ -8,6 +8,9 @@ public:
 	BuoyancyForceGenerator(float h, float V, float d);
 
 	virtual PxVec3 applyForce(Particle* p) override;
+	PxVec3 applyForce(RigidBody* p) override { return PxVec3(0, 0, 0); };
+
+
 	virtual void update(double t) override {};
 
 	virtual ~BuoyancyForceGenerator() {};

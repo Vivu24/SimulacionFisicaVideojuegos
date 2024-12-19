@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "Particle.h"
+#include "RigidBody.h"
 
 enum forceType {
     GRAVITY,
@@ -23,6 +24,8 @@ public:
     // Métodos Virtuales para herencia
     virtual PxVec3 applyForce(Particle* p) = 0;
     virtual void update(double t) = 0;
+    virtual PxVec3 applyForce(RigidBody* rb) = 0;
+
 
     bool isAlive() const { return alive; }
     forceType getType() const { return type; }
